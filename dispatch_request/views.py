@@ -4,8 +4,8 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .models import VehicleRequest
-from .serializers import VehicleRequestSerializer
+from .models import VehicleRequest, Driver, Approval, Vehicle
+from .serializers import VehicleRequestSerializer, DriverSerializer, ApprovalSerializer, VehicleSerializer
 # from dispatch_request.serializers import GroupSerializer, UserSerializer
 # class UserViewSet(viewsets.ModelViewSet):
 #     ''' an API endpont that allows users to be viewed or edited.'''
@@ -19,6 +19,30 @@ from .serializers import VehicleRequestSerializer
 #     serializer_class = GroupSerializer
 #     permission_classes = [permissions.IsAuthenticated]
 
+class DriverViewSet(viewsets.ModelViewSet):
+    ''' Driver api end point view set '''
+    queryset = Driver.objects.all()
+    serializer_class = DriverSerializer
+
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
+
+class VehicleViewSet(viewsets.ModelViewSet):
+    ''' Vehicle api end point view set '''
+    queryset = Vehicle.objects.all()
+    serializer_class = VehicleSerializer
+
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
+
+class ApprovalViewSet(viewsets.ModelViewSet):
+    ''' Approval api end point view set'''
+    queryset = Approval.objects.all()
+    serializer_class = ApprovalSerializer
+
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
+
 class VehicleRequestViewSet(viewsets.ModelViewSet):
     ''' vehicle request api view set '''
     queryset = VehicleRequest.objects.all()
@@ -27,20 +51,20 @@ class VehicleRequestViewSet(viewsets.ModelViewSet):
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
 
-    def create(self, request, *args, **kwargs):
-        ''' create vehicle request '''
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save(user=request.user)
+    # def create(self, request, *args, **kwargs):
+    #     ''' create vehicle request '''
+    #     serializer = self.get_serializer(data=request.data)
+    #     serializer.is_valid(raise_exception=True)
+    #     serializer.save(user=request.user)
 
-        headers = self.get_success_headers(serializer.data)
-        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+    #     headers = self.get_success_headers(serializer.data)
+    #     return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
-    def update(self, request, *args, **kwargs):
-        ''' update vehicle request '''
-        partial = kwargs.pop('partial', False)
-        instance = self.get_object()
-        serializer = self.get_serializer(instance, data=request.data, partial=partial)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response(serializer.data)
+    # def update(self, request, *args, **kwargs):
+    #     ''' update vehicle request '''
+    #     partial = kwargs.pop('partial', False)
+    #     instance = self.get_object()
+    #     serializer = self.get_serializer(instance, data=request.data, partial=partial)
+    #     serializer.is_valid(raise_exception=True)
+    #     serializer.save()
+    #     return Response(serializer.data)
