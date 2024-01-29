@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import UserManager, AbstractBaseUser, PermissionsMixin
 from django.utils import timezone
+from enum import Enum
 
 class CustomUserManager(UserManager):
   ''' custom user class '''
@@ -58,39 +59,26 @@ class User(AbstractBaseUser, PermissionsMixin):
     ''' return username  '''
     return self.username
 
+class VehicleRequestStatus(Enum):
+    PENDING = 'pending'
+    ACTIVE = 'active'
+    COMPLETE = 'complete'
+
+class VehicleType(Enum):
+    CAR = 'car'
+    BUS = 'bus'
+    MINIBUS = 'minibus'
+    VAN = 'van'
+    TRUCK = 'truck'
+    BIKE = 'bike'
+
 class VehicleRequest(models.Model):
-  ACTIVE = 'active'
-  PENDING = 'pending'
-  COMPLETE = 'complete'
-
-  CAR = 'car'
-  BUS = 'bus'
-  MINIBUS = 'minibus'
-  VAN = 'van'
-  TRUCK = 'truck'
-  BIKE = 'bike'
-
-  CHOICES = (
-      (PENDING, 'Pending'),
-      (ACTIVE, 'Active'),
-      (COMPLETE, 'Complete')
-  )
-
-  CHOICES_VTYPES = (
-    (CAR, 'Car'),
-    (BUS, 'Bus'),
-    (MINIBUS, 'Minibus'),
-    (VAN, 'Van'),
-    (TRUCK, 'Truck'),
-    (BIKE, 'Bike')
-  )
-
-  user = models.ForeignKey(User, on_delete=models.CASCADE)
-  request_date = models.DateTimeField(default=timezone.now)
-  description = models.CharField(max_length=500)
-  requested_vehicle_type = models.CharField(max_length=50, choices=CHOICES_VTYPES, default=PENDING)
-  destination = models.CharField(max_length=200)
-  estimated_duration = models.IntegerField(default=0)
-  status = models.CharField(max_length=50, choices=CHOICES, default=PENDING)
-  created_at = models.DateTimeField(auto_now_add=True)
-  updated_at = models.DateTimeField(auto_now=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    request_date = models.DateTimeField(default=timezone.now)
+    description = models.CharField(max_length=500)
+    requested_vehicle_type = models.CharField(max_length=50, choices=[(tag, tag.value) for tag in VehicleType], default=VehicleType.CAR)
+    destination = models.CharField(max_length=200)
+    estimated_duration = models.IntegerField(default=0)
+    status = models.CharField(max_length=50, choices=[(tag, tag.value) for tag in VehicleRequestStatus], default=VehicleRequestStatus.PENDING)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)

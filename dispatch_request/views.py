@@ -1,5 +1,7 @@
 # from django.contrib.auth.models import Group, User
 from rest_framework import permissions, viewsets, status
+from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from .models import VehicleRequest
@@ -21,6 +23,9 @@ class VehicleRequestViewSet(viewsets.ModelViewSet):
     ''' vehicle request api view set '''
     queryset = VehicleRequest.objects.all()
     serializer_class = VehicleRequestSerializer
+
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def create(self, request, *args, **kwargs):
         ''' create vehicle request '''
