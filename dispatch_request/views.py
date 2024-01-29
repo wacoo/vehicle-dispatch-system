@@ -4,8 +4,8 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .models import VehicleRequest, Driver, Approval, Vehicle
-from .serializers import VehicleRequestSerializer, DriverSerializer, ApprovalSerializer, VehicleSerializer
+from .models import VehicleRequest, Driver, Approval, Vehicle, Dispatch
+from .serializers import VehicleRequestSerializer, DriverSerializer, ApprovalSerializer, VehicleSerializer, DispatchSerializer
 # from dispatch_request.serializers import GroupSerializer, UserSerializer
 # class UserViewSet(viewsets.ModelViewSet):
 #     ''' an API endpont that allows users to be viewed or edited.'''
@@ -26,6 +26,11 @@ class DriverViewSet(viewsets.ModelViewSet):
 
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
+
+class DispatchViewSet(viewsets.ViewSet):
+    ''' Dispatch api end point view set '''
+    queryset = Dispatch.objects.all()
+    serializer_class = DispatchSerializer
 
 class VehicleViewSet(viewsets.ModelViewSet):
     ''' Vehicle api end point view set '''

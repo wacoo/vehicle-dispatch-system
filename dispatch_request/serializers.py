@@ -1,7 +1,7 @@
 ''' serializer module '''
 # from django.contrib.auth.models import Group, User
 from rest_framework import serializers
-from .models import VehicleRequest, Driver, Approval, Vehicle
+from .models import VehicleRequest, Driver, Approval, Vehicle, Dispatch
 
 # class UserSerializer(serializers.HyperlinkedModelSerializer):
 #     ''' user serializer class '''
@@ -41,4 +41,11 @@ class ApprovalSerializer(serializers.ModelSerializer):
     class Meta:
         ''' Approval meta '''
         model = Approval
+        fields = '__all__'
+
+class DispatchSerializer(serializers.ModelSerializer):
+    ''' Dispatch serializer '''
+    class Meta:
+        ''' Dispatch meta '''
+        model = Dispatch
         fields = '__all__'

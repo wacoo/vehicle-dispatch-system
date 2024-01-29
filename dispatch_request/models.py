@@ -116,3 +116,16 @@ class Approval(models.Model):
   approval_date = models.DateTimeField(default=timezone.now)
   created_at = models.DateTimeField(auto_now_add=True)
   updated_at = models.DateTimeField(auto_now=True)
+
+class Dispatch(models.Model):
+  ''' Dispatch class '''
+  vehicle_request  = models.ForeignKey(VehicleRequest, on_delete=models.CASCADE)
+  driver_id = request = models.ForeignKey(Driver, on_delete=models.CASCADE)
+  assigned_vehicle = models.ForeignKey(Vehicle, on_delete=models.CASCADE)
+  assigned_date = models.DateTimeField(default=timezone.now)
+  departure_milage = models.IntegerField()
+  departure_fuel_level = models.FloatField()
+  return_milage = models.IntegerField(blank=True, default=0)
+  return_fuel_level = models.FloatField(blank=True, default=0.0)
+  created_at = models.DateTimeField(auto_now_add=True)
+  updated_at = models.DateTimeField(auto_now=True)
