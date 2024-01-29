@@ -3,7 +3,9 @@ from django.contrib.auth.models import UserManager, AbstractBaseUser, Permission
 from django.utils import timezone
 
 class CustomUserManager(UserManager):
+    ''' custom user class '''
     def _create_user(self, username, password, **extra_fields):
+        ''' create user indirect method '''
         if not username:
             raise ValueError('The username must be set')
         user = self.model(username=username, **extra_fields)
@@ -12,17 +14,20 @@ class CustomUserManager(UserManager):
         return user
     
     def create_user(self, username=None, password=None, **extra_fields):
+        ''' create regular user method '''
         extra_fields.setdefault('is_staff', False)
         extra_fields.setdefault('is_superuser', False)
         return self._create_user(username, password, **extra_fields)
     
 
     def create_superuser(self, username=None, password=None, **extra_fields):
+        ''' create superuser method '''
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
         return self._create_user(username, password, **extra_fields)
     
 class User(AbstractBaseUser, PermissionsMixin):
+    ''' user class '''
     username = models.CharField(max_length=10, unique=True)
     fname = models.CharField(max_length=50, blank=False)
     mname = models.CharField(max_length=50, blank=False)
