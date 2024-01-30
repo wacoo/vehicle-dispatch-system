@@ -1,19 +1,21 @@
 ''' serializer module '''
-# from django.contrib.auth.models import Group, User
+from django.contrib.auth.models import Group, User
 from rest_framework import serializers
 from .models import VehicleRequest, Driver, Approval, Vehicle, Dispatch
 
-# class UserSerializer(serializers.HyperlinkedModelSerializer):
-#     ''' user serializer class '''
-#     class Meta:
-#         ''' user serizlizer meta '''
-#         model = User
-#         fields = ['url', 'username', 'email', 'groups']
+class UserSerializer(serializers.HyperlinkedModelSerializer):
+    ''' user serializer class '''
+    class Meta:
+        ''' user serizlizer meta '''
+        model = User
+        fields = ['username', 'fname', 'mname', 'lname', 'access_level', 'is_superuser', 'is_active', 'is_staff', 'date_joined', 'last_login']
 
-# class GroupSerializer(serializers.HyperlinkedModelSerializer):
-#     ''' group serielizer class '''
-#     model = Group
-#     fields = ['url', 'name']
+class GroupSerializer(serializers.HyperlinkedModelSerializer):
+    ''' group serielizer class '''
+    class Meta:  # Add this line to fix the issue
+        ''' group serizlizer meta '''
+        model = Group
+        fields = ['url', 'name']
 
 class VehicleRequestSerializer(serializers.ModelSerializer):
     '''Vehicle request serializer class'''

@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import UserManager, AbstractBaseUser, PermissionsMixin
+from django.contrib.auth.models import UserManager, AbstractBaseUser, PermissionsMixin, Group
 from django.utils import timezone
 from enum import Enum
 
@@ -43,6 +43,7 @@ class User(AbstractBaseUser, PermissionsMixin):
   REQUIRED_FIELDS = []
 
   objects = CustomUserManager()
+  groups = models.ManyToManyField(Group, blank=True)
 
   class Meta:
     ''' User meta '''
@@ -120,8 +121,8 @@ class Approval(models.Model):
 class Dispatch(models.Model):
   ''' Dispatch class '''
   vehicle_request  = models.ForeignKey(VehicleRequest, on_delete=models.CASCADE)
-  driver_id = request = models.ForeignKey(Driver, on_delete=models.CASCADE)
   assigned_vehicle = models.ForeignKey(Vehicle, on_delete=models.CASCADE)
+  assigned_driver = models.ForeignKey(Driver, on_delete=models.CASCADE)
   assigned_date = models.DateTimeField(default=timezone.now)
   departure_milage = models.IntegerField()
   departure_fuel_level = models.FloatField()
