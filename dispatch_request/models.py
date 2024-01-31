@@ -1,15 +1,24 @@
+from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.db import models
-from django.contrib.auth.models import UserManager, AbstractBaseUser, PermissionsMixin, Group
+from django.contrib.auth.models import BaseUserManager, Group
 from django.utils import timezone
 from enum import Enum
 
-class CustomUserManager(UserManager):
+class CustomUserManager(BaseUserManager):
   ''' custom user class '''
-  def _create_user(self, username, password, **extra_fields):
+  def _create_user(self, username, fname, mname, lname, access_level, password=None, **extra_fields):
     ''' create user indirect method '''
     if not username:
-        raise ValueError('The username must be set')
-    user = self.model(username=username, **extra_fields)
+            raise ValueError('The username must be set')
+
+    user = self.model(
+        username=username,
+        fname=fname,
+        mname=mname,
+        lname=lname,
+        access_level=access_level,
+        **extra_fields
+    )
     user.set_password(password)
     user.save(using=self._db)
     return user
@@ -24,6 +33,11 @@ class CustomUserManager(UserManager):
     ''' create superuser method '''
     extra_fields.setdefault('is_staff', True)
     extra_fields.setdefault('is_superuser', True)
+    if extra_fields.get('is_staff') is not True:
+        raise ValueError('Superuser must have is_staff=True.')
+    if extra_fields.get('is_superuser') is not True:
+        raise ValueError('Superuser must have is_superuser=True.')
+    
     return self._create_user(username, password, **extra_fields)
 
 class User(AbstractBaseUser, PermissionsMixin):

@@ -1,21 +1,40 @@
 ''' serializer module '''
-from django.contrib.auth.models import Group, User
+from django.contrib.auth.models import Group
+from .models import User
 from rest_framework import serializers
+from django.contrib.auth.hashers import make_password
 from .models import VehicleRequest, Driver, Approval, Vehicle, Dispatch
 
-class UserSerializer(serializers.HyperlinkedModelSerializer):
+class UserSerializer(serializers.ModelSerializer):
     ''' user serializer class '''
-    class Meta:
-        ''' user serizlizer meta '''
-        model = User
-        fields = ['username', 'fname', 'mname', 'lname', 'access_level', 'is_superuser', 'is_active', 'is_staff', 'date_joined', 'last_login']
+    password = serializers.CharField(write_only=True)
 
-class GroupSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        ''' user serialization meta '''
+        model = User
+        fields = ('id', 'username', 'fname', 'mname', 'lname', 'access_level', 'password', 'is_staff', 'is_superuser')
+
+    def create(self, validated_data):
+        ''' create user custom with password hashing '''
+        is_superuser = validated_data.get('is_superuser', False)
+        validated_data['password'] = make_password(validated_data.get('password'))
+        if is_superuser:
+            validated_data['is_staff'] = True
+        return super(UserSerializer, self).create(validated_data)
+
+    def update(self, instance, validated_data):
+        ''' update user custom with password hashing '''
+        password = validated_data.get('password')
+        if password:
+            validated_data['password'] = make_password(password)
+        return super(UserSerializer, self).update(instance, validated_data)
+
+class GroupSerializer(serializers.ModelSerializer):
     ''' group serielizer class '''
-    class Meta:  # Add this line to fix the issue
+    class Meta:
         ''' group serizlizer meta '''
         model = Group
-        fields = ['url', 'name']
+        fields = '__all__'
 
 class VehicleRequestSerializer(serializers.ModelSerializer):
     '''Vehicle request serializer class'''

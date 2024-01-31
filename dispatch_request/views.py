@@ -1,29 +1,22 @@
 from django.contrib.auth.models import Group
 from dispatch_request.models import User
-from rest_framework import permissions, viewsets, status
+from rest_framework import viewsets
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.views import APIView
-from rest_framework.response import Response
 from .models import VehicleRequest, Driver, Approval, Vehicle, Dispatch
-from .serializers import VehicleRequestSerializer, DriverSerializer, ApprovalSerializer, VehicleSerializer, DispatchSerializer
-from dispatch_request.serializers import GroupSerializer, UserSerializer
+from .serializers import VehicleRequestSerializer, DriverSerializer, ApprovalSerializer, VehicleSerializer, DispatchSerializer, GroupSerializer, UserSerializer
+
+from rest_framework import viewsets
+from .models import User, Group
+from .serializers import UserSerializer, GroupSerializer
 
 class UserViewSet(viewsets.ModelViewSet):
-    ''' an API endpont that allows users to be viewed or edited. '''
-    queryset = User.objects.all().order_by('-date_joined')
+    queryset = User.objects.all()
     serializer_class = UserSerializer
-    
-    # authentication_classes = [JWTAuthentication]
-    # permission_classes = [IsAuthenticated]
 
 class GroupViewSet(viewsets.ModelViewSet):
-    ''' an API end point that allows groups to be viewed pr edited.'''
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
-    
-    # authentication_classes = [JWTAuthentication]
-    # permission_classes = [IsAuthenticated]
 
 class DriverViewSet(viewsets.ModelViewSet):
     ''' Driver api end point view set '''
