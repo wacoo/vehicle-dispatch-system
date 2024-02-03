@@ -6,6 +6,10 @@ name = "pypi"
 [packages]
 django-cors-headers = "*"
 djangorestframework-simplejwt = "*"
+setuptools = "*"
+django = "==3.2.10"
+pyodbc = "*"
+django-mssql-backend = "*"
 
 [dev-packages]
 
