@@ -7,7 +7,7 @@ name = "pypi"
 django-cors-headers = "*"
 djangorestframework-simplejwt = "*"
 setuptools = "*"
-django = "==3.2.10"
+django = "*"
 pyodbc = "*"
 django-mssql-backend = "*"
 
