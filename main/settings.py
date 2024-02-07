@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'rest_framework_simplejwt',
     'dispatch_request'
 ]
 
@@ -79,6 +80,17 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
+        # 'ENGINE': 'sql_server.pyodbc',
+        # 'NAME': 'Vehicle_dispatch',
+        # 'USER': 'saa',
+        # 'PASSWORD': '',
+        # 'HOST': 'localhost',
+        # 'PORT': '1433',
+        # 'OPTIONS': {
+        #     'driver': 'ODBC Driver 18 for SQL Server',
+        #     # 'MARS_ENABLED': True,
+        #     'TrustServerCertificate': True,
+        # }
     }
 }
 
@@ -126,7 +138,14 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 10
+    'PAGE_SIZE': 10,
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
 }
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+]
 
 AUTH_USER_MODEL = 'dispatch_request.User'
