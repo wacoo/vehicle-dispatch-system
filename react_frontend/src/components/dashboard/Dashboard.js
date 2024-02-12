@@ -17,10 +17,10 @@ import Link from '@mui/material/Link';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
-import { mainListItems, secondaryListItems } from './listItems';
-import Chart from './Chart';
-import Deposits from './Deposits';
-import Orders from './Orders';
+import MainListItems from './ListItems';
+import SecondaryListItems from './SecondaryListItems';
+import DashboardContent from './DashboadContent';
+import UserContent from './UserContent';
 
 function Copyright(props) {
   return (
@@ -90,6 +90,7 @@ export default function Dashboard() {
     setOpen(!open);
   };
 
+  const [tab, setTab] = React.useState('Dashboard');
   return (
     <ThemeProvider theme={defaultTheme}>
       <Box sx={{ display: 'flex' }}>
@@ -143,9 +144,9 @@ export default function Dashboard() {
           </Toolbar>
           <Divider />
           <List component="nav">
-            {mainListItems}
+            <MainListItems setTab={ setTab } />
             <Divider sx={{ my: 1 }} />
-            {secondaryListItems}
+            <SecondaryListItems setTab={ setTab }/>
           </List>
         </Drawer>
         <Box
@@ -162,17 +163,9 @@ export default function Dashboard() {
         >
           <Toolbar />
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-              {/* Recent Orders */}
-              <Grid item xs={12} sx={{mx: 2, my: 4}}>
-                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                  <Orders title='Vehicle requests' />
-                </Paper>
-              </Grid>
-              <Grid item xs={12} sx={{mx: 2, my: 4}}>
-                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                  <Orders title='Dispatches' />
-                </Paper>
-              </Grid>
+          {tab === 'Dashboard' && <DashboardContent />}
+          {tab === 'Users' && <UserContent />}
+            <DashboardContent />
             <Copyright sx={{ pt: 4 }} />
           </Container>
         </Box>
