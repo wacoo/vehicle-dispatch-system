@@ -13,10 +13,10 @@ import AltRouteIcon from '@mui/icons-material/AltRoute';
 import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 import AirlineSeatReclineNormalIcon from '@mui/icons-material/AirlineSeatReclineNormal';
 
-const MainListItems = ({ setTab }) => {
+const MainListItems = ({ changeTab }) => {
   return (
     <React.Fragment>
-      <ListItemButton>
+      <ListItemButton  onClick={(e) => changeTab('Dashboard')}>
         <ListItemIcon>
           <DashboardIcon />
         </ListItemIcon>
@@ -40,7 +40,7 @@ const MainListItems = ({ setTab }) => {
         </ListItemIcon>
         <ListItemText primary="Vehicles" />
       </ListItemButton>
-      <ListItemButton onClick={(e) => setTab('Users')}>
+      <ListItemButton onClick={(e) => changeTab('Users')}>
         <ListItemIcon>
           <PeopleIcon />
         </ListItemIcon>

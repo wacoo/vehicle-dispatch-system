@@ -91,6 +91,10 @@ export default function Dashboard() {
   };
 
   const [tab, setTab] = React.useState('Dashboard');
+
+  const changeTab = (tb) => {
+    setTab(tb);
+  }
   return (
     <ThemeProvider theme={defaultTheme}>
       <Box sx={{ display: 'flex' }}>
@@ -144,9 +148,9 @@ export default function Dashboard() {
           </Toolbar>
           <Divider />
           <List component="nav">
-            <MainListItems setTab={ setTab } />
+            <MainListItems changeTab={ changeTab }/>
             <Divider sx={{ my: 1 }} />
-            <SecondaryListItems setTab={ setTab }/>
+            <SecondaryListItems />
           </List>
         </Drawer>
         <Box
@@ -165,7 +169,7 @@ export default function Dashboard() {
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
           {tab === 'Dashboard' && <DashboardContent />}
           {tab === 'Users' && <UserContent />}
-            <DashboardContent />
+            {/* <DashboardContent /> */}
             <Copyright sx={{ pt: 4 }} />
           </Container>
         </Box>
