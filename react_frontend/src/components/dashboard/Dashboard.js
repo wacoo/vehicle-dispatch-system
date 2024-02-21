@@ -22,6 +22,7 @@ import SecondaryListItems from './SecondaryListItems';
 import DashboardContent from './DashboadContent';
 import UserContent from './UserContent';
 import RequestContent from './RequestContent';
+import DispatchContent from './DispatchContent';
 
 function Copyright(props) {
   return (
@@ -169,7 +170,8 @@ export default function Dashboard() {
           <Toolbar />
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
           {tab === 'Dashboard' && <DashboardContent />}
-          {tab === 'Request' && <RequestContent />}
+          {tab === 'Requests' && <RequestContent />}
+          {tab === 'Dispatches' && <DispatchContent />}
           {tab === 'Users' && <UserContent />}
             {/* <DashboardContent /> */}
             <Copyright sx={{ pt: 4 }} />

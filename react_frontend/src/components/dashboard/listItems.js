@@ -22,13 +22,13 @@ const MainListItems = ({ changeTab }) => {
         </ListItemIcon>
         <ListItemText primary="Dashboard" />
       </ListItemButton>
-      <ListItemButton>
+      <ListItemButton  onClick={(e) => changeTab('Requests')}>
         <ListItemIcon>
         <ContactSupportIcon />
         </ListItemIcon>
         <ListItemText primary="Requests" />
       </ListItemButton>
-      <ListItemButton>
+      <ListItemButton   onClick={(e) => changeTab('Dispatches')}>
         <ListItemIcon>
           <AltRouteIcon />
         </ListItemIcon>

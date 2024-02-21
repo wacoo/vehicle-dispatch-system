@@ -1,4 +1,5 @@
-import { Box, FormControl, Grid, InputLabel, MenuItem, Paper, Select, TextField, Typography } from "@mui/material"
+import { Alert, Box, Button, FormControl, Grid, InputLabel, MenuItem, Paper, Select, TextField, Typography } from "@mui/material";
+import CheckIcon from '@mui/icons-material/Check';
 import Chart from "./Chart"
 import Deposits from "./Deposits"
 import Orders from "./Orders"
@@ -9,7 +10,6 @@ import UsersTable from "./UsersTable";
 const UserContent = () => {
     return <>
         {/* Recent Orders */}
-
         <Grid container spacing={2} sx={{ display: 'flex', justifyContent: 'center', backgroundColor: 'background.paper', pr: '12px', pb: '12px', borderRadius: 4, boxShadow: 3, padding: 2, my: '30px' }}>
             <Typography variant="h3">New User</Typography>
         </Grid>
@@ -28,6 +28,24 @@ const UserContent = () => {
             <Grid item xs={12} md={6} lg={4}>
                 <FormControl fullWidth>
                     <TextField label="Last name" type="text" name="lname" id="lname" />
+                </FormControl>
+            </Grid>
+
+            <Grid item xs={12} md={6} lg={4}>
+                <FormControl fullWidth>
+                    <TextField label="Username" type="text" name="uname" id="uname" />
+                </FormControl>
+            </Grid>
+
+            <Grid item xs={12} md={6} lg={4}>
+                <FormControl fullWidth>
+                    <TextField label="Password" type="password" name="pword" id="pword" />
+                </FormControl>
+            </Grid>
+
+            <Grid item xs={12} md={6} lg={4}>
+                <FormControl fullWidth>
+                    <TextField label="Confirm password" type="password" name="confirm" id="confirm" />
                 </FormControl>
             </Grid>
 
@@ -68,12 +86,27 @@ const UserContent = () => {
                     <TextField sx={{ minWidth: '100%' }} label="Phone number" type="text" name="pnumber" id="pnumber" />
                 </FormControl>
             </Grid>
+            <Grid item xs={12} marginTop={2}>
+                <FormControl fullWidth>
+                    <Button variant="outlined">Create</Button>
+                </FormControl>
+            </Grid>
+
+            <Grid item xs={12} marginTop={2}>
+                <Alert icon={<CheckIcon fontSize="inherit" />} severity="success">
+                        Here is a gentle confirmation that your action was successful.
+                </Alert>
+                {/* <Alert severity="error">This is an error Alert.</Alert>
+                <Alert severity="info">This is an info Alert.</Alert>
+                <Alert severity="warning">This is a warning Alert.</Alert> */}
+            </Grid>
+        </Grid>
+
+        <Grid container spacing={2} sx={{display: 'flex', justifyContent: 'center', backgroundColor: 'background.paper', pr: '12px', pb: '12px', borderRadius: 4, boxShadow: 3, padding: 2, my: '30px'}}>
+            <Typography variant="h3">Users</Typography>
         </Grid>
         <Grid container spacing={2} sx={{display: 'flex', justifyContent: 'center', backgroundColor: 'background.paper', pr: '12px', pb: '12px', borderRadius: 4, boxShadow: 3, padding: 2, my: '30px'}}>
-            <Typography variant="h3">Users</Typography>        
-        </Grid>
-        <Grid container spacing={2} sx={{display: 'flex', justifyContent: 'center', backgroundColor: 'background.paper', pr: '12px', pb: '12px', borderRadius: 4, boxShadow: 3, padding: 2, my: '30px'}}>
-            <UsersTable />      
+            <UsersTable />
         </Grid>
     </>
 
