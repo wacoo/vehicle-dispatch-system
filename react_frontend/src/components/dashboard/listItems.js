@@ -22,6 +22,18 @@ const MainListItems = ({ changeTab }) => {
         </ListItemIcon>
         <ListItemText primary="Dashboard" />
       </ListItemButton>
+      <ListItemButton onClick={(e) => changeTab('Drivers')}>
+        <ListItemIcon>
+          <AirlineSeatReclineNormalIcon />
+        </ListItemIcon>
+        <ListItemText primary="Drivers" />
+      </ListItemButton>
+      <ListItemButton onClick={(e) => changeTab('Vehicles')}>
+        <ListItemIcon>
+          <DirectionsCarIcon />
+        </ListItemIcon>
+        <ListItemText primary="Vehicles" />
+      </ListItemButton>
       <ListItemButton  onClick={(e) => changeTab('Requests')}>
         <ListItemIcon>
         <ContactSupportIcon />
@@ -34,23 +46,11 @@ const MainListItems = ({ changeTab }) => {
         </ListItemIcon>
         <ListItemText primary="Dispatches" />
       </ListItemButton>
-      <ListItemButton>
-        <ListItemIcon>
-          <DirectionsCarIcon />
-        </ListItemIcon>
-        <ListItemText primary="Vehicles" />
-      </ListItemButton>
       <ListItemButton onClick={(e) => changeTab('Users')}>
         <ListItemIcon>
           <PeopleIcon />
         </ListItemIcon>
         <ListItemText primary="Users" />
-      </ListItemButton>
-      <ListItemButton>
-        <ListItemIcon>
-          <AirlineSeatReclineNormalIcon />
-        </ListItemIcon>
-        <ListItemText primary="Drivers" />
       </ListItemButton>
       <ListItemButton>
         <ListItemIcon>

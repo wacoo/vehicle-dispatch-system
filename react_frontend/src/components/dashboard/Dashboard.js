@@ -23,6 +23,8 @@ import DashboardContent from './DashboadContent';
 import UserContent from './UserContent';
 import RequestContent from './RequestContent';
 import DispatchContent from './DispatchContent';
+import VehicleContent from './VehicleContent';
+import DriverContent from './DriverContent';
 
 function Copyright(props) {
   return (
@@ -172,6 +174,8 @@ export default function Dashboard() {
           {tab === 'Dashboard' && <DashboardContent />}
           {tab === 'Requests' && <RequestContent />}
           {tab === 'Dispatches' && <DispatchContent />}
+          {tab === 'Vehicles' && <VehicleContent />}
+          {tab === 'Drivers' && <DriverContent />}
           {tab === 'Users' && <UserContent />}
             {/* <DashboardContent /> */}
             <Copyright sx={{ pt: 4 }} />

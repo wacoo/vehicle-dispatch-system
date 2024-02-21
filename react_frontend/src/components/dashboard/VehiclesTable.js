@@ -52,7 +52,7 @@ function preventDefault(event) {
   event.preventDefault();
 }
 
-export default function DriversTable({title}) {
+export default function VehiclesTable({title}) {
   return (
     <React.Fragment>
       <Title>{title}</Title>
@@ -60,9 +60,10 @@ export default function DriversTable({title}) {
         <TableHead>
           <TableRow>
           <TableCell>ID</TableCell>
-            <TableCell>Name</TableCell>
-            <TableCell>Phone</TableCell>
-            <TableCell>Lisense number</TableCell>
+            <TableCell>Make</TableCell>
+            <TableCell>Model</TableCell>
+            <TableCell>Year</TableCell>
+            <TableCell>License plate</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -71,6 +72,8 @@ export default function DriversTable({title}) {
               <TableCell>{row.date}</TableCell>
               <TableCell>{row.name}</TableCell>
               <TableCell>{row.shipTo}</TableCell>
+              <TableCell>{row.paymentMethod}</TableCell>
+              <TableCell align="right">{`$${row.amount}`}</TableCell>
             </TableRow>
           ))}
         </TableBody>

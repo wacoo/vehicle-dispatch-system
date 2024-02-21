@@ -62,7 +62,7 @@ export default function DriversTable({title}) {
           <TableCell>ID</TableCell>
             <TableCell>Name</TableCell>
             <TableCell>Phone</TableCell>
-            <TableCell>Lisense number</TableCell>
+            <TableCell>License number</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
