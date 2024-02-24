@@ -3,6 +3,13 @@ from dispatch_request.models import User
 from rest_framework import viewsets
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.permissions import IsAuthenticated
+
+from rest_framework.views import APIView
+from django.contrib.auth import authenticate
+from rest_framework.response import Response
+from rest_framework import status
+from rest_framework_simplejwt.tokens import RefreshToken
+
 from .models import VehicleRequest, Driver, Approval, Vehicle, Dispatch
 from .serializers import VehicleRequestSerializer, DriverSerializer, ApprovalSerializer, VehicleSerializer, DispatchSerializer, GroupSerializer, UserSerializer
 
@@ -13,6 +20,31 @@ from .serializers import UserSerializer, GroupSerializer
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+    # authentication_classes = [JWTAuthentication]
+    # permission_classes = [IsAuthenticated]
+
+class UserLoginAPIView(APIView):
+    permission_classes = []
+
+    def post(self, request):
+        username = request.data.get('user_id')
+        password = request.data.get('password')
+        print(username)
+        print(password)
+        user = authenticate(username=username, password=password)
+
+        if user is None:
+            return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
+
+        refresh = RefreshToken.for_user(user)
+
+        serializer = UserSerializer(user)
+
+        return Response({
+            'refresh': str(refresh),
+            'access': str(refresh.access_token),
+            'user': serializer.data
+        })
 
 class GroupViewSet(viewsets.ModelViewSet):
     queryset = Group.objects.all()

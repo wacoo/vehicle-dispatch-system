@@ -1,4 +1,5 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import axios from "axios";
 
 const initialState = {
     user: {},
@@ -6,12 +7,14 @@ const initialState = {
     error: undefined
 }
 
-const url = 'http://localhost:8000/api/users';
 const signIn = createAsyncThunk('user/signIn', async (data) => {
     try {
-        const full_url = `${url}/1`;
-        const res = res.data;
+        console.log(data);
+        const full_url = 'http://localhost:8000/api/login/';
+        const res = await axios.post(full_url, data);
+        console.log(res.data);
     } catch (error) {
+        console.log(error);
         return error.message;
     }
 });
@@ -27,6 +30,7 @@ const userSlice = createSlice({
         .addCase(signIn.fulfilled, (state, action) => {
             state.isLoading = false;
             state.user = action.payload;
+            console.log(action.payload);
         })
         .addCase(signIn.rejected, (state, action) => {
             state.isLoading = false;

@@ -60,3 +60,4 @@ apache/logs/
 
 # Ignore all.py files (optional)
 *.py
+node_modules

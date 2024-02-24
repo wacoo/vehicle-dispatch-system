@@ -12,6 +12,8 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { useDispatch, useSelector } from 'react-redux';
+import { signIn } from '../redux/user/userSlice';
 
 function Copyright(props) {
   return (
@@ -31,13 +33,21 @@ function Copyright(props) {
 const defaultTheme = createTheme();
 
 export default function SignIn() {
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+    const dispatch = useDispatch();
+    const user = useSelector((state) => state.user.user);
+    const token = useSelector((state) => state.user.token);
+    console.log(user);
+    console.log(token);
+    
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        const data = new FormData(event.currentTarget);
+        const credential = {
+            user_id: data.get('user_id'),
+            password: data.get('password'),
+        }
+        console.log(credential);
+        dispatch(signIn(credential));
   };
 
   return (
@@ -63,10 +73,10 @@ export default function SignIn() {
               margin="normal"
               required
               fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
+              id="user_id"
+              label="User ID"
+              name="user_id"
+              autoComplete="user_id"
               autoFocus
             />
             <TextField
