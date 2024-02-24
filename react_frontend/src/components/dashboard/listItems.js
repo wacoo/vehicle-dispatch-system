@@ -11,6 +11,7 @@ import ContactSupportIcon from '@mui/icons-material/ContactSupport';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import AltRouteIcon from '@mui/icons-material/AltRoute';
 import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
+import ApprovalIcon from '@mui/icons-material/Approval';
 import AirlineSeatReclineNormalIcon from '@mui/icons-material/AirlineSeatReclineNormal';
 
 const MainListItems = ({ changeTab }) => {
@@ -45,6 +46,12 @@ const MainListItems = ({ changeTab }) => {
           <AltRouteIcon />
         </ListItemIcon>
         <ListItemText primary="Dispatches" />
+      </ListItemButton>
+      <ListItemButton onClick={(e) => changeTab('Approvals')}>
+        <ListItemIcon>
+          <ApprovalIcon />
+        </ListItemIcon>
+        <ListItemText primary="Approvals" />
       </ListItemButton>
       <ListItemButton onClick={(e) => changeTab('Users')}>
         <ListItemIcon>
