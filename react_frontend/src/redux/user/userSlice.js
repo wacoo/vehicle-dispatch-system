@@ -34,3 +34,6 @@ const userSlice = createSlice({
         })
     }
 })
+
+export { signIn };
+export default userSlice.reducer;

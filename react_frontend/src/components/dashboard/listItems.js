@@ -13,47 +13,49 @@ import AltRouteIcon from '@mui/icons-material/AltRoute';
 import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 import ApprovalIcon from '@mui/icons-material/Approval';
 import AirlineSeatReclineNormalIcon from '@mui/icons-material/AirlineSeatReclineNormal';
+import { useNavigate } from 'react-router-dom';
 
-const MainListItems = ({ changeTab }) => {
+const MainListItems = () => {
+  const navigate = useNavigate();
   return (
     <React.Fragment>
-      <ListItemButton  onClick={(e) => changeTab('Dashboard')}>
+      <ListItemButton onClick={() => navigate('/')} >
         <ListItemIcon>
           <DashboardIcon />
         </ListItemIcon>
         <ListItemText primary="Dashboard" />
       </ListItemButton>
-      <ListItemButton onClick={(e) => changeTab('Drivers')}>
+      <ListItemButton onClick={() => navigate('/drivers')}>
         <ListItemIcon>
-          <AirlineSeatReclineNormalIcon />
+          <DirectionsCarIcon />
         </ListItemIcon>
         <ListItemText primary="Drivers" />
       </ListItemButton>
-      <ListItemButton onClick={(e) => changeTab('Vehicles')}>
+      <ListItemButton onClick={() => navigate('/vehicles')}>
         <ListItemIcon>
           <DirectionsCarIcon />
         </ListItemIcon>
         <ListItemText primary="Vehicles" />
       </ListItemButton>
-      <ListItemButton  onClick={(e) => changeTab('Requests')}>
+      <ListItemButton  onClick={() => navigate('/requests')}>
         <ListItemIcon>
         <ContactSupportIcon />
         </ListItemIcon>
         <ListItemText primary="Requests" />
       </ListItemButton>
-      <ListItemButton   onClick={(e) => changeTab('Dispatches')}>
+      <ListItemButton onClick={() => navigate('/dispatches')}>
         <ListItemIcon>
           <AltRouteIcon />
         </ListItemIcon>
         <ListItemText primary="Dispatches" />
       </ListItemButton>
-      <ListItemButton onClick={(e) => changeTab('Approvals')}>
+      <ListItemButton onClick={() => navigate('/approvals')}>
         <ListItemIcon>
           <ApprovalIcon />
         </ListItemIcon>
         <ListItemText primary="Approvals" />
       </ListItemButton>
-      <ListItemButton onClick={(e) => changeTab('Users')}>
+      <ListItemButton onClick={() => navigate('/users')}>
         <ListItemIcon>
           <PeopleIcon />
         </ListItemIcon>

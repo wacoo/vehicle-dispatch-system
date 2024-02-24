@@ -3,19 +3,33 @@ import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import Dashboard from './components/dashboard/Dashboard';
 import SignIn from './components/SignIn';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import NotFound from './components/NotFound';
 
 function App() {
-  const theme = useTheme();
-  const matches = useMediaQuery(theme.breakpoints.up('md'));
-  const [mobileOpen, setMobileOpen] = React.useState(false);
+  // const theme = useTheme();
+  // const matches = useMediaQuery(theme.breakpoints.up('md'));
+  // const [mobileOpen, setMobileOpen] = React.useState(false);
 
-  const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen);
-  };
+  // const handleDrawerToggle = () => {
+  //   setMobileOpen(!mobileOpen);
+  // };
 
   return (
     // <Dashboard />
-    <SignIn />
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Dashboard active='Dashboard'/>} />        
+        <Route path="/drivers" element={<Dashboard active='Drivers'/>} />
+        <Route path="/vehicles" element={<Dashboard active='Vehicles'/>} />
+        <Route path="/requests" element={<Dashboard active='Requests'/>} />
+        <Route path="/dispatches" element={<Dashboard active='Dispatches'/>} />
+        <Route path="/approvals" element={<Dashboard active='Approvals'/>} />
+        <Route path="/users" element={<Dashboard active='Users'/>} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </BrowserRouter>
+    // <SignIn />
   );
 }
 

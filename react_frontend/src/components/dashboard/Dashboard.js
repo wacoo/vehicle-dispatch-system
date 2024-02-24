@@ -89,17 +89,17 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
-export default function Dashboard() {
+export default function Dashboard({ active }) {
   const [open, setOpen] = React.useState(true);
   const toggleDrawer = () => {
     setOpen(!open);
   };
 
-  const [tab, setTab] = React.useState('Dashboard');
+  //const [tab, setTab] = React.useState('Dashboard');
 
-  const changeTab = (tb) => {
-    setTab(tb);
-  }
+  // const changeTab = (tb) => {
+  //   setTab(tb);
+  // }
   return (
     <ThemeProvider theme={defaultTheme}>
       <Box sx={{ display: 'flex' }}>
@@ -153,7 +153,7 @@ export default function Dashboard() {
           </Toolbar>
           <Divider />
           <List component="nav">
-            <MainListItems changeTab={ changeTab }/>
+            <MainListItems />
             <Divider sx={{ my: 1 }} />
             <SecondaryListItems />
           </List>
@@ -172,13 +172,13 @@ export default function Dashboard() {
         >
           <Toolbar />
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-          {tab === 'Dashboard' && <DashboardContent />}
-          {tab === 'Requests' && <RequestContent />}
-          {tab === 'Dispatches' && <DispatchContent />}
-          {tab === 'Vehicles' && <VehicleContent />}
-          {tab === 'Drivers' && <DriverContent />}
-          {tab === 'Approvals' && <ApprovalContent />}
-          {tab === 'Users' && <UserContent />}
+          {active === 'Dashboard' && <DashboardContent />}
+          {active === 'Requests' && <RequestContent />}
+          {active === 'Dispatches' && <DispatchContent />}
+          {active === 'Vehicles' && <VehicleContent />}
+          {active === 'Drivers' && <DriverContent />}
+          {active === 'Approvals' && <ApprovalContent />}
+          {active === 'Users' && <UserContent />}
             {/* <DashboardContent /> */}
             <Copyright sx={{ pt: 4 }} />
           </Container>
