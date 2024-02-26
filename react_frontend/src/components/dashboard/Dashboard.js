@@ -26,6 +26,7 @@ import DispatchContent from './DispatchContent';
 import VehicleContent from './VehicleContent';
 import DriverContent from './DriverContent';
 import ApprovalContent from './ApprovalContent';
+import { useNavigate } from 'react-router-dom';
 
 function Copyright(props) {
   return (
@@ -94,12 +95,28 @@ export default function Dashboard({ active }) {
   const toggleDrawer = () => {
     setOpen(!open);
   };
-
+  
+  const navigate = useNavigate();
   //const [tab, setTab] = React.useState('Dashboard');
 
   // const changeTab = (tb) => {
   //   setTab(tb);
   // }
+  const storedUser = localStorage.getItem('user');
+  let parsedUser = '';
+  if (storedUser) {
+    console.log('sss');
+    parsedUser = JSON.parse(storedUser);
+  }
+
+  React.useEffect(() => {
+    if (!parsedUser) {
+      navigate('/signin');
+    }
+  }, [parsedUser])
+  
+
+  console.log('ddd: ', parsedUser);
   return (
     <ThemeProvider theme={defaultTheme}>
       <Box sx={{ display: 'flex' }}>

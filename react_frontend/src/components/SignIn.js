@@ -14,6 +14,7 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useDispatch, useSelector } from 'react-redux';
 import { signIn } from '../redux/user/userSlice';
+import { useNavigate } from 'react-router-dom';
 
 function Copyright(props) {
   return (
@@ -34,10 +35,27 @@ const defaultTheme = createTheme();
 
 export default function SignIn() {
     const dispatch = useDispatch();
-    const user = useSelector((state) => state.user.user);
-    const token = useSelector((state) => state.user.token);
-    console.log(user);
-    console.log(token);
+    const navigate = useNavigate();
+    const user = useSelector((state) => state.user.user.user) ?? '';
+    const token = useSelector((state) => state.user.user.access) ?? '';  
+    console.log('parsedUser.user');
+    const storedUser = localStorage.getItem('user');
+    let parsedUser = '';
+    if (storedUser) {
+      parsedUser = JSON.parse(storedUser);
+    }
+
+    React.useEffect(() => {
+      if (parsedUser === '' && user !== '') {
+        const userInfo = {
+          user: user,
+          token: token
+        }
+        localStorage.setItem('user', JSON.stringify(userInfo));
+        console.log(userInfo);
+        navigate('/');
+      }
+    }, [user, dispatch]);
     
     const handleSubmit = (event) => {
         event.preventDefault();
