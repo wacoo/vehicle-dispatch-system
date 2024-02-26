@@ -5,9 +5,42 @@ import Deposits from "./Deposits"
 import Orders from "./Orders"
 import Input from '@mui/joy/Input';
 import UsersTable from "./UsersTable";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { signUp } from "../../redux/user/userSlice";
 
 
 const UserContent = () => {
+    const dispatch = useDispatch();
+    const [userData, setUserData] = useState({
+        fname: '',
+        mname: '',
+        lname: '',
+        department: '',
+        username: '',
+        password: '',
+        confirm: '',
+        access_level: '',
+        phone_number: '',
+        is_staff: false,
+        is_superuser: false,
+    });
+
+    //username=None, fname=None, mname=None, lname=None, access_level=None, password=None
+    //fields = ('id', 'username', 'fname', 'mname', 'lname', 'department', 'access_level', 'password', 'is_staff', 'is_superuser')
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        console.log(userData);
+        if(userData.access_level === 2) {
+            setUserData((prev) => ({ ...prev, is_staff: true, is_superuser: true }));
+            console.log('Here');
+        } else {
+            setUserData((prev) => ({ ...prev, is_staff: false, is_superuser: false }));
+            console.log('Here2');
+        }
+        dispatch(signUp(userData));
+    }
+
     return <>
         {/* Recent Orders */}
         <Grid container spacing={2} sx={{ display: 'flex', justifyContent: 'center', backgroundColor: 'background.paper', pr: '12px', pb: '12px', borderRadius: 4, boxShadow: 3, padding: 2, my: '30px' }}>
@@ -17,35 +50,35 @@ const UserContent = () => {
             {/* First name, Middle name, Last name in a row (3 on large, 2 on medium, 1 on small) */}
             <Grid item xs={12} md={6} lg={4}>
                 <FormControl fullWidth>
-                    <TextField label="First name" type="text" name="fname" id="fname" />
+                    <TextField label="First name" type="text" name="fname" id="fname" onChange={(e) => setUserData((prev) => ({ ...prev, fname: e.target.value }))}/>
                 </FormControl>
             </Grid>
             <Grid item xs={12} md={6} lg={4}>
                 <FormControl fullWidth>
-                    <TextField label="Middle name" type="text" name="mname" id="mname" />
+                    <TextField label="Middle name" type="text" name="mname" id="mname" onChange={(e) => setUserData((prev) => ({ ...prev, mname: e.target.value }))}/>
                 </FormControl>
             </Grid>
             <Grid item xs={12} md={6} lg={4}>
                 <FormControl fullWidth>
-                    <TextField label="Last name" type="text" name="lname" id="lname" />
-                </FormControl>
-            </Grid>
-
-            <Grid item xs={12} md={6} lg={4}>
-                <FormControl fullWidth>
-                    <TextField label="Username" type="text" name="uname" id="uname" />
+                    <TextField label="Last name" type="text" name="lname" id="lname" onChange={(e) => setUserData((prev) => ({ ...prev, lname: e.target.value }))}/>
                 </FormControl>
             </Grid>
 
             <Grid item xs={12} md={6} lg={4}>
                 <FormControl fullWidth>
-                    <TextField label="Password" type="password" name="pword" id="pword" />
+                    <TextField label="Username" type="text" name="uname" id="uname" onChange={(e) => setUserData((prev) => ({ ...prev, username: e.target.value }))}/>
                 </FormControl>
             </Grid>
 
             <Grid item xs={12} md={6} lg={4}>
                 <FormControl fullWidth>
-                    <TextField label="Confirm password" type="password" name="confirm" id="confirm" />
+                    <TextField label="Password" type="password" name="pword" id="pword" onChange={(e) => setUserData((prev) => ({ ...prev, password: e.target.value }))}/>
+                </FormControl>
+            </Grid>
+
+            <Grid item xs={12} md={6} lg={4}>
+                <FormControl fullWidth>
+                    <TextField label="Confirm password" type="password" name="confirm" id="confirm" onChange={(e) => setUserData((prev) => ({ ...prev, confirm: e.target.value }))}/>
                 </FormControl>
             </Grid>
 
@@ -55,41 +88,46 @@ const UserContent = () => {
                     <InputLabel id="dept_lbl" sx={{ marginBottom: '8px' }}>Department</InputLabel>
                     <Select
                         labelId="dept_lbl"
-                        id="demo-simple-select"
+                        id="dept"
+                        name="dept"
                         label="Department"
                         sx={{ minWidth: '100%' }} // Ensure select is full width
-                    // Handle value, label, onChange
+                        // Handle value, label, onChange
+                        onChange={(e) => setUserData((prev) => ({ ...prev, department: e.target.value }))}
                     >
-                        <MenuItem value={10}>Ten</MenuItem>
-                        <MenuItem value={20}>Twenty</MenuItem>
-                        <MenuItem value={30}>Thirty</MenuItem>
+                        <MenuItem value={'ICT'}>ICT</MenuItem>
+                        <MenuItem value={'HR'}>HR</MenuItem>
+                        <MenuItem value={'Finance'}>Finance</MenuItem>
                     </Select>
                 </FormControl>
             </Grid>
             <Grid item xs={12}>
                 <FormControl fullWidth>
-                    <InputLabel id="dept_lbl" sx={{ marginBottom: '8px' }}>Role</InputLabel>
+                    <InputLabel id="role_lbl" sx={{ marginBottom: '8px' }}>Role</InputLabel>
                     <Select
-                        labelId="dept_lbl"
-                        id="demo-simple-select"
-                        label="Department"
+                        labelId="role_lbl"
+                        id="role"
+                        label="Role"
                         sx={{ minWidth: '100%' }} // Ensure select is full width
-                    // Handle value, label, onChange
+                        // Handle value, label, onChange
+                        onChange={(e) => setUserData((prev) => ({ ...prev, access_level: e.target.value }))}
                     >
-                        <MenuItem value={10}>User</MenuItem>
-                        <MenuItem value={20}>Administrator</MenuItem>
+                        <MenuItem value={0}>User</MenuItem>
+                        <MenuItem value={2}>Administrator</MenuItem>
                     </Select>
                 </FormControl>
             </Grid>
             <Grid item xs={12}>
                 <FormControl fullWidth>
-                    <TextField sx={{ minWidth: '100%' }} label="Phone number" type="text" name="pnumber" id="pnumber" />
+                    <TextField sx={{ minWidth: '100%' }} label="Phone number" type="text" name="pnumber" id="pnumber" onChange={(e) => setUserData((prev) => ({ ...prev, phone_number: e.target.value }))} />
                 </FormControl>
             </Grid>
             <Grid item xs={12} marginTop={2}>
-                <FormControl fullWidth>
-                    <Button variant="outlined">Create</Button>
-                </FormControl>
+                <form onSubmit={(e)=> handleSubmit(e)}>
+                    <FormControl fullWidth>
+                        <Button variant="outlined" type="submit">Create</Button>
+                    </FormControl>
+                </form>                
             </Grid>
 
             <Grid item xs={12} marginTop={2}>

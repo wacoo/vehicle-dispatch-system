@@ -17,7 +17,7 @@ import Link from '@mui/material/Link';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
-import MainListItems from './ListItems';
+import MainListItems from './listItems';
 import SecondaryListItems from './SecondaryListItems';
 import DashboardContent from './DashboadContent';
 import UserContent from './UserContent';
@@ -124,7 +124,7 @@ export default function Dashboard({ active }) {
         <AppBar position="absolute" open={open}>
           <Toolbar
             sx={{
-              pr: '24px', // keep right padding when drawer closed
+              pr: '24px',
             }}
           >
             <IconButton
