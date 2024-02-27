@@ -12,7 +12,7 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         ''' user serialization meta '''
         model = User
-        fields = ('id', 'username', 'fname', 'mname', 'lname', 'access_level', 'password', 'is_staff', 'is_superuser')
+        fields = ('id', 'username', 'fname', 'mname', 'lname', 'department', 'access_level', 'password', 'phone_number', 'is_staff', 'is_superuser')
 
     def create(self, validated_data):
         ''' create user custom with password hashing '''

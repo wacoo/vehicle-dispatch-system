@@ -25,11 +25,12 @@ const signIn = createAsyncThunk('user/signIn', async (data) => {
 const user = localStorage.getItem('user');
 let token = '';
 if (user) {
-	token = JSON.parse(user).access_token;
+	token = JSON.parse(user).token;
 } else {
 	token = '';
 }
 
+console.log('Token: ',token);
 const headers = {
     Authorization: `Bearer ${token}`,
 };
@@ -37,7 +38,7 @@ const headers = {
 const signUp = createAsyncThunk('user/signUp', async (data) => {
     try {
         const full_url = `${url}users/`;
-        const res = await axios.post(full_url, data);
+        const res = await axios.post(full_url, data, {headers});
         return res.data;
     } catch (error ) {
         return error.message;
