@@ -7,7 +7,7 @@ import Input from '@mui/joy/Input';
 import UsersTable from "./UsersTable";
 import VehiclesTable from "./VehiclesTable";
 import DriversTable from "./DriversTable";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { createDriver } from "../../redux/driver/driverSlice";
 
@@ -20,6 +20,8 @@ const DriverContent = () => {
     // license_number = models.CharField(max_length=20)
     // created_at = models.DateTimeField(auto_now_add=True)
     // updated_at = models.DateTimeField(auto_now=True)
+    const [success, setSuccess] = useState(false);
+    const [error, setError] = useState('');
     const dispatch = useDispatch();
     const [driverData, setDriverData] = useState({
         fname: '',
@@ -29,11 +31,31 @@ const DriverContent = () => {
         license_number: '',
     })
 
+    useEffect(() => {
+        const timer = setTimeout(() => {
+          setError('');
+          setSuccess(false);
+        }, 5000);
+    
+        // Remember to clean up the timer when the component unmounts
+        return () => clearTimeout(timer);
+      }, [error, success]);
+
     const handleSubmit = (e) => {
         e.preventDefault();
         dispatch(createDriver(driverData)).then((res) => {
-            console.log(res);
-        });
+            // console.log(res.payload.fname);
+            if (res.payload?.id) {
+                setSuccess(true);
+            } else {
+                setError(res.payload);
+                console.log(res.payload);
+            }
+        }).catch((error) => {
+            // Handle any errors from the first then block
+            setError(error);
+            console.log(error);
+          });
     }
 
     return <>
@@ -78,11 +100,13 @@ const DriverContent = () => {
             </Grid>
 
             <Grid item xs={12} marginTop={2}>
-                <Alert icon={<CheckIcon fontSize="inherit" />} severity="success">
-                        Here is a gentle confirmation that your action was successful.
-                </Alert>
-                {/* <Alert severity="error">This is an error Alert.</Alert>
-                <Alert severity="info">This is an info Alert.</Alert>
+                {
+                    success && <Alert icon={<CheckIcon fontSize="inherit" />} severity="success">
+                            Driver created successfully!
+                    </Alert>
+                }
+                { error && <Alert severity="error">{error}</Alert>} 
+                {/* <Alert severity="info">This is an info Alert.</Alert>
                 <Alert severity="warning">This is a warning Alert.</Alert> */}
             </Grid>
         </Grid>

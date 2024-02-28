@@ -26,7 +26,7 @@ const createDriver = createAsyncThunk('driver/createDriver', async (data) => {
     console.log('Token: ',token);
     try {
         const full_url = `${url}drivers/`;
-        const res = await axios.post(full_url, data, { headers });
+        const res = await axios.post(full_url, data);
         return res.data;
     } catch (error ) {
         return error.message;

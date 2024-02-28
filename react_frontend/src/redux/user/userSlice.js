@@ -38,7 +38,7 @@ const headers = {
 const signUp = createAsyncThunk('user/signUp', async (data) => {
     try {
         const full_url = `${url}users/`;
-        const res = await axios.post(full_url, data, {headers});
+        const res = await axios.post(full_url, data);
         return res.data;
     } catch (error ) {
         return error.message;

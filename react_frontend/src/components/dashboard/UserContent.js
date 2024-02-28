@@ -5,13 +5,15 @@ import Deposits from "./Deposits"
 import Orders from "./Orders"
 import Input from '@mui/joy/Input';
 import UsersTable from "./UsersTable";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { signUp } from "../../redux/user/userSlice";
 
 
 const UserContent = () => {
     const dispatch = useDispatch();
+    const [success, setSuccess] = useState(false);
+    const [error, setError] = useState('');
     const [userData, setUserData] = useState({
         fname: '',
         mname: '',
@@ -26,6 +28,15 @@ const UserContent = () => {
         is_superuser: false,
     });
 
+    useEffect(() => {
+        const timer = setTimeout(() => {
+          setError('');
+          setSuccess(false);
+        }, 5000);
+    
+        // Remember to clean up the timer when the component unmounts
+        return () => clearTimeout(timer);
+      }, [error, success]);
     //username=None, fname=None, mname=None, lname=None, access_level=None, password=None
     //fields = ('id', 'username', 'fname', 'mname', 'lname', 'department', 'access_level', 'password', 'is_staff', 'is_superuser')
     const handleSubmit = (e) => {
@@ -131,11 +142,13 @@ const UserContent = () => {
             </Grid>
 
             <Grid item xs={12} marginTop={2}>
-                <Alert icon={<CheckIcon fontSize="inherit" />} severity="success">
-                        Here is a gentle confirmation that your action was successful.
-                </Alert>
-                {/* <Alert severity="error">This is an error Alert.</Alert>
-                <Alert severity="info">This is an info Alert.</Alert>
+                {
+                    success && <Alert icon={<CheckIcon fontSize="inherit" />} severity="success">
+                            User created successfully!
+                    </Alert>
+                }
+                { error && <Alert severity="error">{error}</Alert>} 
+                {/* <Alert severity="info">This is an info Alert.</Alert>
                 <Alert severity="warning">This is a warning Alert.</Alert> */}
             </Grid>
         </Grid>
