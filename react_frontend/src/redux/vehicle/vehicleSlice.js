@@ -3,8 +3,8 @@ import axios from "axios";
 
 const initialState = {
     user: {},
-    drivers: [],
-    newDriver: {},
+    vehicles: [],
+    newVehicle: {},
     isLoading: false,
     error: undefined
 }
@@ -22,8 +22,8 @@ if (user) {
 const headers = {
     Authorization: `Bearer ${token}`,
 };
-const full_url = `${url}drivers/`;
-const fetchDrivers = createAsyncThunk('drivers/fetchDrivers', async() => {
+const full_url = `${url}vehicles/`;
+const fetchVehicles = createAsyncThunk('vehicles/fetchVehicles', async() => {
     try {
         const res = await axios.get(full_url);
         return res.data;
@@ -32,7 +32,7 @@ const fetchDrivers = createAsyncThunk('drivers/fetchDrivers', async() => {
     }
 });
 
-const createDriver = createAsyncThunk('drivers/createDriver', async (data) => {
+const createVehicle = createAsyncThunk('vehicles/createVehicle', async (data) => {
     console.log('Token: ',token);
     try {
         const res = await axios.post(full_url, data);
@@ -42,37 +42,37 @@ const createDriver = createAsyncThunk('drivers/createDriver', async (data) => {
     }
 });
 
-const driverSlice = createSlice({
-    name: 'driver',
+const vehicleSlice = createSlice({
+    name: 'vehicles',
     initialState,
     extraReducers: (builder) => {
         builder
-        .addCase(createDriver.pending, (state, action) => {
+        .addCase(createVehicle.pending, (state, action) => {
             state.isLoading = true;
         })
-        .addCase(createDriver.fulfilled, (state, action) => {
+        .addCase(createVehicle.fulfilled, (state, action) => {
             state.isLoading = false;
-            state.newDriver = action.payload;
+            state.newVehicle = action.payload;
             console.log(action.payload);
         })
-        .addCase(createDriver.rejected, (state, action) => {
+        .addCase(createVehicle.rejected, (state, action) => {
             state.isLoading = false;
             state.error = action.error.message;
         })
-        .addCase(fetchDrivers.pending, (state, action) => {
+        .addCase(fetchVehicles.pending, (state, action) => {
             state.isLoading = true;
         })
-        .addCase(fetchDrivers.fulfilled, (state, action) => {
+        .addCase(fetchVehicles.fulfilled, (state, action) => {
             state.isLoading = false;
-            state.drivers = action.payload;
+            state.vehicles = action.payload;
             console.log(action.payload);
         })
-        .addCase(fetchDrivers.rejected, (state, action) => {
+        .addCase(fetchVehicles.rejected, (state, action) => {
             state.isLoading = false;
             state.error = action.error.message;
         })
     }
 })
 
-export {createDriver, fetchDrivers };
-export default driverSlice.reducer;
+export {createVehicle, fetchVehicles };
+export default vehicleSlice.reducer;

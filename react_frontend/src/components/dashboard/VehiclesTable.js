@@ -6,6 +6,8 @@ import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Title from './Title';
+import { fetchVehicles } from '../../redux/vehicle/vehicleSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
 // Generate Order Data
 function createData(id, date, name, shipTo, paymentMethod, amount) {
@@ -53,6 +55,17 @@ function preventDefault(event) {
 }
 
 export default function VehiclesTable({title}) {
+
+  const vehicles = useSelector((state) => state.vehicles.vehicles.results) ?? [];
+  const dispatch = useDispatch();
+    React.useEffect(() => {
+        console.log(vehicles);
+    }, [vehicles]);
+
+    React.useEffect(() => {
+        dispatch(fetchVehicles());
+    }, []);
+  
   return (
     <React.Fragment>
       <Title>{title}</Title>
@@ -63,17 +76,17 @@ export default function VehiclesTable({title}) {
             <TableCell>Make</TableCell>
             <TableCell>Model</TableCell>
             <TableCell>Year</TableCell>
-            <TableCell>License plate</TableCell>
+            <TableCell align="right">License plate</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
-            <TableRow key={row.id}>
-              <TableCell>{row.date}</TableCell>
-              <TableCell>{row.name}</TableCell>
-              <TableCell>{row.shipTo}</TableCell>
-              <TableCell>{row.paymentMethod}</TableCell>
-              <TableCell align="right">{`$${row.amount}`}</TableCell>
+          {vehicles.map((vehicle) => (
+            <TableRow key={vehicle.id}>
+              <TableCell>{vehicle.id}</TableCell>
+              <TableCell>{vehicle.make}</TableCell>
+              <TableCell>{vehicle.model}</TableCell>
+              <TableCell>{vehicle.year}</TableCell>
+              <TableCell align="right">{`$${vehicle.license_plate}`}</TableCell>
             </TableRow>
           ))}
         </TableBody>

@@ -6,6 +6,8 @@ import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Title from './Title';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchDrivers } from '../../redux/driver/driverSlice';
 
 // Generate Order Data
 function createData(id, date, name, shipTo, paymentMethod, amount) {
@@ -53,6 +55,16 @@ function preventDefault(event) {
 }
 
 export default function DriversTable({title}) {
+  const drivers = useSelector((state) => state.driver.drivers.results) ?? [];
+  const dispatch = useDispatch();
+    React.useEffect(() => {
+        console.log(drivers);
+    }, [drivers]);
+
+    React.useEffect(() => {
+        dispatch(fetchDrivers());
+    }, []);
+
   return (
     <React.Fragment>
       <Title>{title}</Title>
@@ -62,15 +74,16 @@ export default function DriversTable({title}) {
           <TableCell>ID</TableCell>
             <TableCell>Name</TableCell>
             <TableCell>Phone</TableCell>
-            <TableCell>License number</TableCell>
+            <TableCell align="right">License number</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
-            <TableRow key={row.id}>
-              <TableCell>{row.date}</TableCell>
-              <TableCell>{row.name}</TableCell>
-              <TableCell>{row.shipTo}</TableCell>
+          {drivers.map((driver) => (
+            <TableRow key={driver.id}>
+              <TableCell>{driver.id}</TableCell>
+              <TableCell>{`${driver.fname} ${driver.mname}`}</TableCell>
+              <TableCell>{driver.phone_number}</TableCell>
+              <TableCell>{driver.license_number}</TableCell>
             </TableRow>
           ))}
         </TableBody>

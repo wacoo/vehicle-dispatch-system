@@ -55,40 +55,40 @@ class DriverViewSet(viewsets.ModelViewSet):
     queryset = Driver.objects.all()
     serializer_class = DriverSerializer
 
-    authentication_classes = [JWTAuthentication]
-    permission_classes = [IsAuthenticated]
+    # authentication_classes = [JWTAuthentication]
+    # permission_classes = [IsAuthenticated]
 
 class DispatchViewSet(viewsets.ModelViewSet):
     ''' Dispatch api end point view set '''
     queryset = Dispatch.objects.all()
     serializer_class = DispatchSerializer
 
-    authentication_classes = [JWTAuthentication]
-    permission_classes = [IsAuthenticated]
+    # authentication_classes = [JWTAuthentication]
+    # permission_classes = [IsAuthenticated]
 
 class VehicleViewSet(viewsets.ModelViewSet):
     ''' Vehicle api end point view set '''
     queryset = Vehicle.objects.all()
     serializer_class = VehicleSerializer
 
-    authentication_classes = [JWTAuthentication]
-    permission_classes = [IsAuthenticated]
+    # authentication_classes = [JWTAuthentication]
+    # permission_classes = [IsAuthenticated]
 
 class ApprovalViewSet(viewsets.ModelViewSet):
     ''' Approval api end point view set'''
     queryset = Approval.objects.all()
     serializer_class = ApprovalSerializer
 
-    authentication_classes = [JWTAuthentication]
-    permission_classes = [IsAuthenticated]
+    # authentication_classes = [JWTAuthentication]
+    # permission_classes = [IsAuthenticated]
 
 class VehicleRequestViewSet(viewsets.ModelViewSet):
     ''' vehicle request api view set '''
     queryset = VehicleRequest.objects.all()
     serializer_class = VehicleRequestSerializer
 
-    authentication_classes = [JWTAuthentication]
-    permission_classes = [IsAuthenticated]
+    # authentication_classes = [JWTAuthentication]
+    # permission_classes = [IsAuthenticated]
 
     # def create(self, request, *args, **kwargs):
     #     ''' create vehicle request '''

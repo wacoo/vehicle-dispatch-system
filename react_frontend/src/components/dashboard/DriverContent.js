@@ -7,9 +7,9 @@ import Input from '@mui/joy/Input';
 import UsersTable from "./UsersTable";
 import VehiclesTable from "./VehiclesTable";
 import DriversTable from "./DriversTable";
-import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import { createDriver } from "../../redux/driver/driverSlice";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { createDriver, fetchDrivers } from "../../redux/driver/driverSlice";
 
 
 const DriverContent = () => {
@@ -29,7 +29,7 @@ const DriverContent = () => {
         lname: '',
         phone_number: '',
         license_number: '',
-    })
+    });
 
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -47,6 +47,7 @@ const DriverContent = () => {
             // console.log(res.payload.fname);
             if (res.payload?.id) {
                 setSuccess(true);
+                dispatch(fetchDrivers());
             } else {
                 setError(res.payload);
                 console.log(res.payload);
@@ -55,7 +56,7 @@ const DriverContent = () => {
             // Handle any errors from the first then block
             setError(error);
             console.log(error);
-          });
+        });
     }
 
     return <>
