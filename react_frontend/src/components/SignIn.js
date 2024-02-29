@@ -36,8 +36,8 @@ const defaultTheme = createTheme();
 export default function SignIn() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const user = useSelector((state) => state.user.user.user) ?? '';
-    const token = useSelector((state) => state.user.user.access) ?? '';  
+    const user = useSelector((state) => state.users.user.user) ?? '';
+    const token = useSelector((state) => state.users.user.access) ?? '';  
     console.log('parsedUser.user');
     const storedUser = localStorage.getItem('user');
     let parsedUser = '';

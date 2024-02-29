@@ -2,7 +2,7 @@ import { Alert, Box, Button, FormControl, Grid, InputLabel, MenuItem, Paper, Sel
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import CheckIcon from '@mui/icons-material/Check';
 import Chart from "./Chart"
 import Deposits from "./Deposits"
@@ -10,78 +10,151 @@ import Orders from "./Orders"
 import Input from '@mui/joy/Input';
 import UsersTable from "./UsersTable";
 import RequestsTable from "./RequestsTable";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { createRequest, fetchRequests } from "../../redux/request/requestSlice";
+import { fetchUsers } from "../../redux/user/userSlice";
+import dayjs from "dayjs";
 
 
 const RequestContent = () => {
-    return <>
-        {/* Recent Orders */}
+    const [value, setValue] = useState(dayjs('2022-04-17'));
+    const [requestData, setRequestData] = useState({
+        user_id: '',
+        request_date: value.format('YYYY-MM-DD'),
+        description: '',
+        requested_vehicle_type: '',
+        destination: '',
+        estimated_duration: '',
+        status: 'Pending',
+    });
+    const [success, setSuccess] = useState(false);
+    const [error, setError] = useState('');
+    const dispatch = useDispatch();
+    const users = useSelector((state) => state.users.users.results) ?? [];
+    const isLoading = useSelector((state) => state.users.isLoading);
 
+    // const handleDateChange = (newValue) => {
+    //     console.log(newValue);
+    //     // setSelectedDate(newValue);
+    // };
+
+    useEffect(() => {
+        dispatch(fetchUsers());
+    }, []);
+
+    useEffect(() => {
+        console.log(isLoading);
+        console.log(users);
+    }, [users]);
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setError('');
+            setSuccess(false);
+        }, 5000);
+
+        // Remember to clean up the timer when the component unmounts
+        return () => clearTimeout(timer);
+    }, [error, success]);
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        console.log(requestData);
+        dispatch(createRequest(requestData)).then((res) => {
+            // console.log(res.payload.fname);
+            if (res.payload?.id) {
+                setSuccess(true);
+                dispatch(fetchRequests());
+            } else {
+                setError(res.payload);
+                console.log(res.payload);
+            }
+        }).catch((error) => {
+            // Handle any errors from the first then block
+            setError(error);
+            console.log(error);
+        });
+    }
+
+    if (isLoading) {
+        return <h1>Loading...</h1>
+    }
+    return <>
         <Grid container spacing={2} sx={{ display: 'flex', justifyContent: 'center', backgroundColor: 'background.paper', pr: '12px', pb: '12px', borderRadius: 4, boxShadow: 3, padding: 2, my: '30px' }}>
             <Typography variant="h4">New Vehicle Request</Typography>
         </Grid>
         <Grid container spacing={2} sx={{ display: 'flex', justifyContent: 'center', backgroundColor: 'background.paper', pr: '12px', pb: '12px', borderRadius: 4, boxShadow: 3, padding: 2 }}>
             {/* First name, Middle name, Last name in a row (3 on large, 2 on medium, 1 on small) */}
-            <Grid item xs={12}  md={6} lg={4}>
+            <Grid item xs={12} md={6} lg={4}>
                 <FormControl fullWidth>
                     <InputLabel id="dept_lbl" sx={{ marginBottom: '8px' }}>Requester</InputLabel>
                     <Select
                         labelId="dept_lbl"
                         id="demo-simple-select"
                         label="Department"
-                        sx={{ minWidth: '100%' }} // Ensure select is full width
-                    // Handle value, label, onChange
+                        sx={{ minWidth: '100%' }}
+                        // Handle value, label, onChange
+                        onChange={(e) => setRequestData((prev) => ({ ...prev, user_id: e.target.value }))}
                     >
-                        <MenuItem value={10}>Abebe</MenuItem>
-                        <MenuItem value={20}>Ashenafi</MenuItem>
-                        <MenuItem value={30}>Yonas</MenuItem>
+                        {users.map((user) => (
+                            <MenuItem key={user.id} value={user.id}>
+                                {`${user.fname} ${user.mname}`}
+                            </MenuItem>
+                        ))}
+                        {/* <MenuItem value={20}>Ashenafi</MenuItem>
+                        <MenuItem value={30}>Yonas</MenuItem> */}
                     </Select>
                 </FormControl>
             </Grid>
-            <Grid item xs={12} md={6} lg={4} sx={{mt: '-7px'}}>
+            <Grid item xs={12} md={6} lg={4} sx={{ mt: '-7px' }}>
                 <FormControl fullWidth>
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                        <DemoContainer components={['DateTimePicker']}>
-                            <DateTimePicker label="Request date" />
-                        </DemoContainer>
-                    </LocalizationProvider>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DatePicker
+                        value={value}
+                        onChange={(newValue) => setValue(newValue)}
+                    />
+                </LocalizationProvider>
                 </FormControl>
             </Grid>
-            <Grid item xs={12}  md={6} lg={4}>
+            <Grid item xs={12} md={6} lg={4}>
                 <FormControl fullWidth>
                     <InputLabel id="dept_lbl" sx={{ marginBottom: '8px' }}>Vehicle type</InputLabel>
                     <Select
                         labelId="dept_lbl"
                         id="demo-simple-select"
                         label="Department"
-                        sx={{ minWidth: '100%' }} // Ensure select is full width
-                    // Handle value, label, onChange
+                        sx={{ minWidth: '100%' }}
+                        // Handle value, label, onChange
+                        onChange={(e) => setRequestData((prev) => ({ ...prev, requested_vehicle_type: e.target.value }))}
                     >
-                        <MenuItem value={10}>Motor bike</MenuItem>
-                        <MenuItem value={20}>Car</MenuItem>
-                        <MenuItem value={30}>Track</MenuItem>
-                        <MenuItem value={40}>Bus</MenuItem>
+                        <MenuItem value={'Motor bike'}>Motor bike</MenuItem>
+                        <MenuItem value={'Car'}>Car</MenuItem>
+                        <MenuItem value={'Track'}>Track</MenuItem>
+                        <MenuItem value={'Bus'}>Bus</MenuItem>
                     </Select>
                 </FormControl>
             </Grid>
-            <Grid item xs={12}  md={6} lg={4}>
+            <Grid item xs={12} md={6} lg={4}>
                 <FormControl fullWidth>
-                    <TextField label="Destination" type="text" name="dest" id="dest" />
+                    <TextField label="Destination" type="text" name="dest" id="dest" onChange={(e) => setRequestData((prev) => ({ ...prev, destination: e.target.value }))} />
                 </FormControl>
             </Grid>
-            <Grid item xs={12}  md={6} lg={4}>
+            <Grid item xs={12} md={6} lg={4}>
                 <FormControl fullWidth>
-                    <TextField label="Duration" type="number" name="duration" id="duration" />
+                    <TextField label="Duration" type="number" name="duration" id="duration" onChange={(e) => setRequestData((prev) => ({ ...prev, estimated_duration: e.target.value }))} />
                 </FormControl>
             </Grid>
-            <Grid item xs={12}  md={6} lg={4}>
+            <Grid item xs={12} md={6} lg={4}>
                 <FormControl fullWidth>
                     <InputLabel id="dept_lbl" sx={{ marginBottom: '8px' }}>Status</InputLabel>
                     <Select
                         labelId="dept_lbl"
                         id="demo-simple-select"
                         label="Department"
-                        sx={{ minWidth: '100%' }} // Ensure select is full width
+                        sx={{ minWidth: '100%' }}
                     // Handle value, label, onChange
+                    // onChange={(e) => setRequestData((prev) => ({...prev, status: e.target.value}))}
                     >
                         <MenuItem value={10}>Pending</MenuItem>
                         <MenuItem value={20}>Approved</MenuItem>
@@ -91,28 +164,32 @@ const RequestContent = () => {
             </Grid>
             <Grid item xs={12}>
                 <FormControl fullWidth>
-                    <TextField label="Description" type="text" name="desc" id="desc" multiline />
+                    <TextField label="Description" type="text" name="desc" id="desc" multiline onChange={(e) => setRequestData((prev) => ({ ...prev, description: e.target.value }))} />
                 </FormControl>
             </Grid>
             <Grid item xs={12} marginTop={2}>
-                <FormControl fullWidth>
-                    <Button variant="outlined">Create</Button>
-                </FormControl>
+                <form onSubmit={(e) => handleSubmit(e)}>
+                    <FormControl fullWidth>
+                        <Button variant="outlined" type="submit">Create</Button>
+                    </FormControl>
+                </form>
             </Grid>
             <Grid item xs={12} marginTop={2}>
-                <Alert icon={<CheckIcon fontSize="inherit" />} severity="success">
-                        Here is a gentle confirmation that your action was successful.
-                </Alert>
-                {/* <Alert severity="error">This is an error Alert.</Alert>
-                <Alert severity="info">This is an info Alert.</Alert>
+                {
+                    success && <Alert icon={<CheckIcon fontSize="inherit" />} severity="success">
+                        Vehicle requested successfully!
+                    </Alert>
+                }
+                {error && <Alert severity="error">{error}</Alert>}
+                {/* <Alert severity="info">This is an info Alert.</Alert>
                 <Alert severity="warning">This is a warning Alert.</Alert> */}
             </Grid>
         </Grid>
-        <Grid container spacing={2} sx={{display: 'flex', justifyContent: 'center', backgroundColor: 'background.paper', pr: '12px', pb: '12px', borderRadius: 4, boxShadow: 3, padding: 2, my: '30px'}}>
-            <Typography variant="h4">Requests</Typography>        
+        <Grid container spacing={2} sx={{ display: 'flex', justifyContent: 'center', backgroundColor: 'background.paper', pr: '12px', pb: '12px', borderRadius: 4, boxShadow: 3, padding: 2, my: '30px' }}>
+            <Typography variant="h4">Requests</Typography>
         </Grid>
-        <Grid container spacing={2} sx={{display: 'flex', justifyContent: 'center', backgroundColor: 'background.paper', pr: '12px', pb: '12px', borderRadius: 4, boxShadow: 3, padding: 2, my: '30px'}}>
-            <RequestsTable />      
+        <Grid container spacing={2} sx={{ display: 'flex', justifyContent: 'center', backgroundColor: 'background.paper', pr: '12px', pb: '12px', borderRadius: 4, boxShadow: 3, padding: 2, my: '30px' }}>
+            <RequestsTable />
         </Grid>
     </>
 

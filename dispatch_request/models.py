@@ -82,18 +82,18 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 class VehicleRequestStatus(Enum):
     ''' Status enumarable '''
-    PENDING = 'pending'
-    ACTIVE = 'active'
-    COMPLETE = 'complete'
+    PENDING = 'PENDING'
+    ACTIVE = 'ACTIVE'
+    COMPLETE = 'COMPLETE'
 
 class VehicleType(Enum):
     ''' Vehicle type enumerable '''
-    CAR = 'car'
-    BUS = 'bus'
-    MINIBUS = 'minibus'
-    VAN = 'van'
-    TRUCK = 'truck'
-    BIKE = 'bike'
+    CAR = 'CAR'
+    BUS = 'BUS'
+    MINIBUS = 'MINIBUS'
+    VAN = 'VAN'
+    TRUCK = 'TRUCK'
+    BIKE = 'BIKE'
 
 class VehicleRequest(models.Model):
     ''' Vehicle request class '''

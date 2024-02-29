@@ -3,6 +3,7 @@ import axios from "axios";
 
 const initialState = {
     user: {},
+    users: [],
     newUser: {},
     isLoading: false,
     error: undefined
@@ -34,10 +35,19 @@ console.log('Token: ',token);
 const headers = {
     Authorization: `Bearer ${token}`,
 };
-
-const signUp = createAsyncThunk('user/signUp', async (data) => {
+const full_url = `${url}users/`;
+const fetchUsers = createAsyncThunk('users/fetchUsers', async() => {
     try {
-        const full_url = `${url}users/`;
+        const res = await axios.get(full_url);
+        console.log(res.data);
+        return res.data;
+    } catch(error) {
+        return error.message;
+    }
+});
+
+const signUp = createAsyncThunk('users/signUp', async (data) => {
+    try {
         const res = await axios.post(full_url, data);
         return res.data;
     } catch (error ) {
@@ -46,7 +56,7 @@ const signUp = createAsyncThunk('user/signUp', async (data) => {
 });
 
 const userSlice = createSlice({
-    name: 'user',
+    name: 'users',
     initialState,
     extraReducers: (builder) => {
         builder
@@ -83,8 +93,20 @@ const userSlice = createSlice({
             state.isLoading = false;
             state.error = action.error.message;
         })
+        .addCase(fetchUsers.pending, (state, action) => {
+            state.isLoading = true;
+        })
+        .addCase(fetchUsers.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.users = action.payload;
+            console.log(action.payload);
+        })
+        .addCase(fetchUsers.rejected, (state, action) => {
+            state.isLoading = false;
+            state.error = action.error.message;
+        })
     }
 })
 
-export { signIn, signUp };
+export { signIn, signUp, fetchUsers };
 export default userSlice.reducer;
