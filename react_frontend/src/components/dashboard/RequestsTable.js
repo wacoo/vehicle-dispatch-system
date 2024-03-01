@@ -6,6 +6,8 @@ import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Title from './Title';
+import { fetchRequests } from '../../redux/request/requestSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
 // Generate Order Data
 function createData(id, date, name, shipTo, paymentMethod, amount) {
@@ -53,6 +55,16 @@ function preventDefault(event) {
 }
 
 export default function RequestsTable({title}) {
+  const requests = useSelector((state) => state.requests.requests.results) ?? [];
+  const dispatch = useDispatch();
+    React.useEffect(() => {
+        console.log(requests);
+    }, [requests]);
+
+    React.useEffect(() => {
+        dispatch(fetchRequests());
+    }, []);
+
   return (
     <React.Fragment>
       <Title>{title}</Title>
@@ -60,21 +72,33 @@ export default function RequestsTable({title}) {
         <TableHead>
           <TableRow>
           <TableCell>ID</TableCell>
+            <TableCell>Requester</TableCell>
+            <TableCell>Department</TableCell>
             <TableCell>Request date</TableCell>
             <TableCell>Vehicle type</TableCell>
             <TableCell>Destination</TableCell>
-            <TableCell>Duration</TableCell>
-            <TableCell>Status</TableCell>
+            <TableCell>Duration (Hrs.)</TableCell>
+            <TableCell  align="right" >Status</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
-            <TableRow key={row.id}>
-              <TableCell>{row.date}</TableCell>
-              <TableCell>{row.name}</TableCell>
-              <TableCell>{row.shipTo}</TableCell>
-              <TableCell>{row.paymentMethod}</TableCell>
-              <TableCell align="right">{`$${row.amount}`}</TableCell>
+        {/* user: '',
+        request_date: new Date(value.format('YYYY-MM-DD')).toISOString(),
+        description: '',
+        requested_vehicle_type: '',
+        destination: '',
+        estimated_duration: '',
+        status: 'PENDING', */}
+          {requests.map((request) => (
+            <TableRow key={request.id}>
+              <TableCell>{request.id}</TableCell>
+              <TableCell>{`${request.user.fname} ${request.user.mname}`}</TableCell>
+              <TableCell>{request.user.department}</TableCell>
+              <TableCell>{request.request_date.slice(0, 10)}</TableCell>
+              <TableCell>{request.requested_vehicle_type}</TableCell>
+              <TableCell>{request.destination}</TableCell>
+              <TableCell>{request.estimated_duration}</TableCell>
+              <TableCell align="right">{request.status}</TableCell>
             </TableRow>
           ))}
         </TableBody>

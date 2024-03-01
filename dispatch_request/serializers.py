@@ -5,6 +5,13 @@ from rest_framework import serializers
 from django.contrib.auth.hashers import make_password
 from .models import VehicleRequest, Driver, Approval, Vehicle, Dispatch
 
+class UserLimitedSerializer(serializers.ModelSerializer):
+    ''' only for Eager fetch '''
+    class Meta:
+        ''' Meta '''
+        model = User
+        fields = ('id', 'username', 'fname', 'mname', 'lname', 'department')
+
 class UserSerializer(serializers.ModelSerializer):
     ''' user serializer class '''
     password = serializers.CharField(write_only=True)
@@ -13,7 +20,6 @@ class UserSerializer(serializers.ModelSerializer):
         ''' user serialization meta '''
         model = User
         fields = ('id', 'username', 'fname', 'mname', 'lname', 'department', 'access_level', 'password', 'phone_number', 'is_staff', 'is_superuser')
-
     def create(self, validated_data):
         ''' create user custom with password hashing '''
         is_superuser = validated_data.get('is_superuser', False)
@@ -38,10 +44,19 @@ class GroupSerializer(serializers.ModelSerializer):
 
 class VehicleRequestSerializer(serializers.ModelSerializer):
     '''Vehicle request serializer class'''
+    # user = UserLimitedSerializer(read_only=True)
     class Meta:
         ''' Request meta '''
         model = VehicleRequest
-        fields = '__all__'
+        fields = ('id', 'user', 'request_date', 'description', 'requested_vehicle_type', 'destination', 'estimated_duration', 'status', 'created_at', 'updated_at')
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        try:
+            representation['user'] = UserLimitedSerializer(instance.user).data
+        except User.DoesNotExist:
+            representation['user'] = None
+        return representation
 
 class DriverSerializer(serializers.ModelSerializer):
     ''' Drivers serializer '''

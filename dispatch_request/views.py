@@ -84,7 +84,7 @@ class ApprovalViewSet(viewsets.ModelViewSet):
 
 class VehicleRequestViewSet(viewsets.ModelViewSet):
     ''' vehicle request api view set '''
-    queryset = VehicleRequest.objects.all()
+    queryset = VehicleRequest.objects.select_related('user')
     serializer_class = VehicleRequestSerializer
 
     # authentication_classes = [JWTAuthentication]

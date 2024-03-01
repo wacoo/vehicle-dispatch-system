@@ -20,13 +20,13 @@ import dayjs from "dayjs";
 const RequestContent = () => {
     const [value, setValue] = useState(dayjs('2022-04-17'));
     const [requestData, setRequestData] = useState({
-        user_id: '',
-        request_date: value.format('YYYY-MM-DD'),
+        user: '',
+        request_date: new Date(value.format('YYYY-MM-DD')).toISOString(),
         description: '',
         requested_vehicle_type: '',
         destination: '',
         estimated_duration: '',
-        status: 'Pending',
+        status: 'PENDING',
     });
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState('');
@@ -91,11 +91,11 @@ const RequestContent = () => {
                     <InputLabel id="dept_lbl" sx={{ marginBottom: '8px' }}>Requester</InputLabel>
                     <Select
                         labelId="dept_lbl"
-                        id="demo-simple-select"
+                        id="user"
                         label="Department"
                         sx={{ minWidth: '100%' }}
                         // Handle value, label, onChange
-                        onChange={(e) => setRequestData((prev) => ({ ...prev, user_id: e.target.value }))}
+                        onChange={(e) => setRequestData((prev) => ({ ...prev, user: e.target.value }))}
                     >
                         {users.map((user) => (
                             <MenuItem key={user.id} value={user.id}>
@@ -128,10 +128,12 @@ const RequestContent = () => {
                         // Handle value, label, onChange
                         onChange={(e) => setRequestData((prev) => ({ ...prev, requested_vehicle_type: e.target.value }))}
                     >
-                        <MenuItem value={'Motor bike'}>Motor bike</MenuItem>
-                        <MenuItem value={'Car'}>Car</MenuItem>
-                        <MenuItem value={'Track'}>Track</MenuItem>
-                        <MenuItem value={'Bus'}>Bus</MenuItem>
+                        <MenuItem value={'BIKE'}>MOTOR BIKE</MenuItem>
+                        <MenuItem value={'CAR'}>CAR</MenuItem>
+                        <MenuItem value={'VAN'}>VAN</MenuItem>
+                        <MenuItem value={'MINIBUS'}>MINIBUS</MenuItem>
+                        <MenuItem value={'BUS'}>BUS</MenuItem>
+                        <MenuItem value={'TRUCK'}>TRUCK</MenuItem>
                     </Select>
                 </FormControl>
             </Grid>
@@ -156,9 +158,9 @@ const RequestContent = () => {
                     // Handle value, label, onChange
                     // onChange={(e) => setRequestData((prev) => ({...prev, status: e.target.value}))}
                     >
-                        <MenuItem value={10}>Pending</MenuItem>
-                        <MenuItem value={20}>Approved</MenuItem>
-                        <MenuItem value={30}>Rejected</MenuItem>
+                        <MenuItem value={'PENDING'}>PENDING</MenuItem>
+                        <MenuItem value={'APPROVED'}>APPROVED</MenuItem>
+                        <MenuItem value={'REJECTED'}>REJECTED</MenuItem>
                     </Select>
                 </FormControl>
             </Grid>

@@ -95,17 +95,29 @@ class VehicleType(Enum):
     TRUCK = 'TRUCK'
     BIKE = 'BIKE'
 
+# class VehicleRequest(models.Model):
+#     ''' Vehicle request class '''
+#     user = models.ForeignKey(User, on_delete=models.CASCADE)
+#     request_date = models.DateTimeField(default=timezone.now)
+#     description = models.CharField(max_length=500)
+#     requested_vehicle_type = models.CharField(max_length=50, choices=[(tag, tag.value) for tag in VehicleType], default=VehicleType.CAR)
+#     destination = models.CharField(max_length=200)
+#     estimated_duration = models.IntegerField(default=0)
+#     status = models.CharField(max_length=50, choices=[(tag, tag.value) for tag in VehicleRequestStatus], default=VehicleRequestStatus.PENDING)
+#     created_at = models.DateTimeField(auto_now_add=True)
+#     updated_at = models.DateTimeField(auto_now=True)
+  
 class VehicleRequest(models.Model):
-    ''' Vehicle request class '''
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    request_date = models.DateTimeField(default=timezone.now)
-    description = models.CharField(max_length=500)
-    requested_vehicle_type = models.CharField(max_length=50, choices=[(tag, tag.value) for tag in VehicleType], default=VehicleType.CAR)
-    destination = models.CharField(max_length=200)
-    estimated_duration = models.IntegerField(default=0)
-    status = models.CharField(max_length=50, choices=[(tag, tag.value) for tag in VehicleRequestStatus], default=VehicleRequestStatus.PENDING)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+  ''' Vehicle request class '''
+  user = models.ForeignKey(User, on_delete=models.CASCADE)
+  request_date = models.DateTimeField(default=timezone.now)
+  description = models.CharField(max_length=500)
+  requested_vehicle_type = models.CharField(max_length=50, choices=[(tag.name, tag.value) for tag in VehicleType], default=VehicleType.CAR.value)
+  destination = models.CharField(max_length=200)
+  estimated_duration = models.IntegerField(default=0)
+  status = models.CharField(max_length=50, choices=[(tag.name, tag.value) for tag in VehicleRequestStatus], default=VehicleRequestStatus.PENDING.value)
+  created_at = models.DateTimeField(auto_now_add=True)
+  updated_at = models.DateTimeField(auto_now=True)
 
 class Driver(models.Model):
   ''' Drivers class '''
