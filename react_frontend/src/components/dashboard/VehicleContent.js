@@ -19,6 +19,7 @@ const VehicleContent = () => {
         make: '',
         model: '',
         year: '',
+        type: 'BUS',
         current_milage: '',
         license_plate: '',
         fuel_level: '',

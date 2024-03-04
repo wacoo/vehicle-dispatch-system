@@ -42,6 +42,14 @@ class GroupSerializer(serializers.ModelSerializer):
         model = Group
         fields = '__all__'
 
+class VehicleRequestLimitedSerializer(serializers.ModelSerializer):
+    '''Vehicle request serializer class'''
+    # user = UserLimitedSerializer(read_only=True)
+    class Meta:
+        ''' Request meta '''
+        model = VehicleRequest
+        fields = ('id', 'request_date','requested_vehicle_type', 'destination', 'estimated_duration', 'status')
+
 class VehicleRequestSerializer(serializers.ModelSerializer):
     '''Vehicle request serializer class'''
     # user = UserLimitedSerializer(read_only=True)
@@ -58,12 +66,25 @@ class VehicleRequestSerializer(serializers.ModelSerializer):
             representation['user'] = None
         return representation
 
+class DriverLimitedSerializer(serializers.ModelSerializer):
+    ''' Drivers serializer '''
+    class Meta:
+        ''' Driver meta '''
+        model= Driver
+        fields = ('id', 'fname', 'mname', 'lname', 'license_number')
 class DriverSerializer(serializers.ModelSerializer):
     ''' Drivers serializer '''
     class Meta:
         ''' Driver meta '''
         model= Driver
         fields = '__all__'
+
+class VehicleLimitedSerializer(serializers.ModelSerializer):
+    ''' Vehicle serializer '''
+    class Meta:
+        ''' Vehicle meta '''
+        model= Vehicle
+        fields = ('id', 'make', 'model', 'license_plate')
 
 class VehicleSerializer(serializers.ModelSerializer):
     ''' Vehicle serializer '''
@@ -84,4 +105,14 @@ class DispatchSerializer(serializers.ModelSerializer):
     class Meta:
         ''' Dispatch meta '''
         model = Dispatch
-        fields = '__all__'
+        fields = ('id', 'vehicle_request', 'assigned_vehicle', 'assigned_driver', 'assigned_date', 'departure_milage', 'departure_fuel_level', 'return_milage', 'return_fuel_level', 'created_at', 'updated_at')
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        try:
+            representation['driver'] = DriverLimitedSerializer(instance.assigned_driver).data
+            representation['vehicle'] = VehicleLimitedSerializer(instance.assigned_vehicle).data
+            representation['request'] = VehicleRequestLimitedSerializer(instance.vehicle_request).data
+        except Driver.DoesNotExist:
+            representation['driver'] = None
+        return representation

@@ -179,7 +179,7 @@ const RequestContent = () => {
             <Grid item xs={12} marginTop={2}>
                 {
                     success && <Alert icon={<CheckIcon fontSize="inherit" />} severity="success">
-                        Vehicle requested successfully!
+                        Request sent successfully, please wait for approval.
                     </Alert>
                 }
                 {error && <Alert severity="error">{error}</Alert>}

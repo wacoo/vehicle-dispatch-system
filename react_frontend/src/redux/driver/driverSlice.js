@@ -3,6 +3,7 @@ import axios from "axios";
 
 const initialState = {
     user: {},
+    driver: {},
     drivers: [],
     newDriver: {},
     isLoading: false,
@@ -26,6 +27,15 @@ const full_url = `${url}drivers/`;
 const fetchDrivers = createAsyncThunk('drivers/fetchDrivers', async() => {
     try {
         const res = await axios.get(full_url);
+        return res.data;
+    } catch(error) {
+        return error.message;
+    }
+});
+
+const fetchDriver = createAsyncThunk('drivers/fetchDriver', async(id) => {
+    try {
+        const res = await axios.get(`${full_url}/${id}/`);
         return res.data;
     } catch(error) {
         return error.message;
@@ -71,8 +81,20 @@ const driverSlice = createSlice({
             state.isLoading = false;
             state.error = action.error.message;
         })
+        .addCase(fetchDriver.pending, (state, action) => {
+            state.isLoading = true;
+        })
+        .addCase(fetchDriver.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.driver = action.payload;
+            console.log(action.payload);
+        })
+        .addCase(fetchDriver.rejected, (state, action) => {
+            state.isLoading = false;
+            state.error = action.error.message;
+        })
     }
 })
 
-export {createDriver, fetchDrivers };
+export {createDriver, fetchDrivers, fetchDriver };
 export default driverSlice.reducer;

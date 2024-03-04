@@ -6,6 +6,8 @@ import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Title from './Title';
+import { fetchDispatches } from '../../redux/dispatch/dispatchSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
 // Generate Order Data
 function createData(id, date, name, shipTo, paymentMethod, amount) {
@@ -53,6 +55,15 @@ function preventDefault(event) {
 }
 
 export default function DispatchTable({title}) {
+  const dispatches = useSelector((state) => state.dispatches.dispatches.results) ?? [];
+  const dispatch = useDispatch();
+  React.useEffect(() => {
+    dispatch(fetchDispatches());
+  }, []);
+
+  React.useEffect(() => {
+    console.log(dispatches);
+  }, [dispatches]);
   return (
     <React.Fragment>
       <Title>{title}</Title>
@@ -60,8 +71,10 @@ export default function DispatchTable({title}) {
         <TableHead>
           <TableRow>
             <TableCell>Dispatch ID</TableCell>
-            <TableCell>Request ID</TableCell>
+            <TableCell>Request</TableCell>
+            <TableCell>Vehicle</TableCell>
             <TableCell>Driver</TableCell>
+            <TableCell>Assigned date</TableCell>
             <TableCell>Departure milage</TableCell>
             <TableCell>Departure fuel level</TableCell>
             <TableCell>Return milage</TableCell>
@@ -69,13 +82,17 @@ export default function DispatchTable({title}) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
-            <TableRow key={row.id}>
-              <TableCell>{row.date}</TableCell>
-              <TableCell>{row.name}</TableCell>
-              <TableCell>{row.shipTo}</TableCell>
-              <TableCell>{row.paymentMethod}</TableCell>
-              <TableCell align="right">{`$${row.amount}`}</TableCell>
+          {dispatches.map((dispatch) => (
+            <TableRow key={dispatch.id}>
+              <TableCell>{dispatch.id}</TableCell>
+              <TableCell>{`${dispatch.request.request_date.slice(0, 10)}; ${dispatch.request.requested_vehicle_type}; ${dispatch.request.estimated_duration}`}</TableCell>
+              <TableCell>{`${dispatch.vehicle.license_plate}; ${dispatch.vehicle.make} ${dispatch.vehicle.model}`}</TableCell>
+              <TableCell>{`${dispatch.driver.license_number}; ${dispatch.driver.fname} ${dispatch.driver.mname}`}</TableCell>
+              <TableCell>{dispatch.assigned_date.slice(0, 10)}</TableCell>
+              <TableCell>{dispatch.departure_milage}</TableCell>
+              <TableCell>{dispatch.departure_fuel_level}</TableCell>
+              <TableCell>{dispatch.return_milage}</TableCell>
+              <TableCell align="right">{`${dispatch.return_fuel_level}`}</TableCell>
             </TableRow>
           ))}
         </TableBody>
