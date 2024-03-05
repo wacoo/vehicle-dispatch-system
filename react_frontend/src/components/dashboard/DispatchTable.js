@@ -85,7 +85,7 @@ export default function DispatchTable({title}) {
           {dispatches.map((dispatch) => (
             <TableRow key={dispatch.id}>
               <TableCell>{dispatch.id}</TableCell>
-              <TableCell>{`${dispatch.request.request_date.slice(0, 10)}; ${dispatch.request.requested_vehicle_type}; ${dispatch.request.estimated_duration}`}</TableCell>
+              <TableCell>{`${dispatch.request.request_date.slice(0, 10)}; ${dispatch.request.requested_vehicle_type}; Duration: ${dispatch.request.estimated_duration} Hrs`}</TableCell>
               <TableCell>{`${dispatch.vehicle.license_plate}; ${dispatch.vehicle.make} ${dispatch.vehicle.model}`}</TableCell>
               <TableCell>{`${dispatch.driver.license_number}; ${dispatch.driver.fname} ${dispatch.driver.mname}`}</TableCell>
               <TableCell>{dispatch.assigned_date.slice(0, 10)}</TableCell>

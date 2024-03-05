@@ -58,6 +58,13 @@ class VehicleRequestSerializer(serializers.ModelSerializer):
         model = VehicleRequest
         fields = ('id', 'user', 'request_date', 'description', 'requested_vehicle_type', 'destination', 'estimated_duration', 'status', 'created_at', 'updated_at')
 
+    def update(self, instance, validated_data):
+        ''' update user custom with password hashing '''
+        status = validated_data.get('status')
+        if status == 'PENDING':
+            validated_data['status'] = 'APPROVED'
+        return super(VehicleRequestSerializer, self).update(instance, validated_data)
+    
     def to_representation(self, instance):
         representation = super().to_representation(instance)
         try:
@@ -99,6 +106,16 @@ class ApprovalSerializer(serializers.ModelSerializer):
         ''' Approval meta '''
         model = Approval
         fields = '__all__'
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        try:
+            representation['manager'] = UserLimitedSerializer(instance.manager).data
+            representation['request'] = VehicleRequestLimitedSerializer(instance.request).data
+        except User.DoesNotExist:
+            representation['user'] = None
+        # except VehicleRequest.DoesNotExist:
+        #     representation['request'] = None
+        return representation
 
 class DispatchSerializer(serializers.ModelSerializer):
     ''' Dispatch serializer '''
@@ -115,4 +132,8 @@ class DispatchSerializer(serializers.ModelSerializer):
             representation['request'] = VehicleRequestLimitedSerializer(instance.vehicle_request).data
         except Driver.DoesNotExist:
             representation['driver'] = None
+        # except Vehicle.DoesNotExist:
+        #     representation['vehicle'] = None
+        # except VehicleRequest.DoesNotExist:
+        #     representation['vehicle'] = None
         return representation

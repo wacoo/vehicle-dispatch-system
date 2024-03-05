@@ -6,6 +6,8 @@ import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Title from './Title';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchApprovals } from '../../redux/approval/approvalSlice';
 
 // Generate Order Data
 function createData(id, date, name, shipTo, paymentMethod, amount) {
@@ -53,26 +55,36 @@ function preventDefault(event) {
 }
 
 export default function ApprovalTable({title}) {
+  const approvals = useSelector((state) => state.approvals.approvals.results) ?? [];
+  const dispatch = useDispatch();
+  React.useEffect(() => {
+    dispatch(fetchApprovals());
+  }, []);
+
+  React.useEffect(() => {
+    console.log(approvals);
+  }, [approvals]);
   return (
     <React.Fragment>
       <Title>{title}</Title>
       <Table size="small">
         <TableHead>
           <TableRow>
-          <TableCell>ID</TableCell>
-            <TableCell>Request ID</TableCell>
-            <TableCell>Manager</TableCell>
+            <TableCell>ID</TableCell>          
             <TableCell>Approval Date</TableCell>
+            <TableCell>Request</TableCell>
+            <TableCell>Manager</TableCell>
             <TableCell>Status</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
-            <TableRow key={row.id}>
-              <TableCell>{row.date}</TableCell>
-              <TableCell>{row.name}</TableCell>
-              <TableCell>{row.shipTo}</TableCell>
-              <TableCell>{row.paymentMethod}</TableCell>
+          {approvals.map((approval) => (
+            approval.request.status !== 'PENDING' && <TableRow key={approval.id}>
+              <TableCell>{approval.id}</TableCell>
+              <TableCell>{`${approval.request.request_date.slice(0, 10)}, ${approval.request.requested_vehicle_type}; ${approval.request.destination};`}</TableCell>
+              <TableCell>{`${approval.manager.fname} ${approval.manager.mname}`}</TableCell>
+              <TableCell>{approval.request.status}</TableCell>              
+              <TableCell>{approval.approval_date.slice(0, 10)}</TableCell>
             </TableRow>
           ))}
         </TableBody>

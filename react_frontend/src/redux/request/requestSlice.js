@@ -5,6 +5,7 @@ const initialState = {
     user: {},
     requests: [],
     newRequest: {},
+    updatedRequest: {},
     isLoading: false,
     error: undefined
 }
@@ -43,6 +44,17 @@ const createRequest = createAsyncThunk('requests/createRequest', async (data) =>
     }
 });
 
+const updateRequest = createAsyncThunk('requests/updateRequest', async (data) => {
+    console.log('Token: ',token);
+    try {
+        const res = await axios.put(full_url, data);
+        console.log(data);
+        return res.data;
+    } catch (error ) {
+        return error.message;
+    }
+});
+
 const requestSlice = createSlice({
     name: 'requests',
     initialState,
@@ -72,8 +84,20 @@ const requestSlice = createSlice({
             state.isLoading = false;
             state.error = action.error.message;
         })
+        .addCase(updateRequest.pending, (state, action) => {
+            state.isLoading = true;
+        })
+        .addCase(updateRequest.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.updatedRequest = action.payload;
+            console.log(action.payload);
+        })
+        .addCase(updateRequest.rejected, (state, action) => {
+            state.isLoading = false;
+            state.error = action.error.message;
+        })
     }
 })
 
-export {createRequest, fetchRequests };
+export {createRequest, fetchRequests, updateRequest };
 export default requestSlice.reducer;

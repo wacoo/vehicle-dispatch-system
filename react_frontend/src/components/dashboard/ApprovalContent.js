@@ -7,13 +7,68 @@ import Input from '@mui/joy/Input';
 import UsersTable from "./UsersTable";
 import VehiclesTable from "./VehiclesTable";
 import DriversTable from "./DriversTable";
-import { DateTimePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { DatePicker, DateTimePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import ApprovalTable from "./ApprovalTable";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { createApproval, fetchApprovals } from "../../redux/approval/approvalSlice";
+import { fetchRequests } from "../../redux/request/requestSlice";
+import { fetchUsers } from "../../redux/user/userSlice";
+import dayjs from "dayjs";
 
 
 const ApprovalContent = () => {
+    const [value, setValue] = useState(dayjs('2022-04-17'));
+    const [success, setSuccess] = useState(false);
+    const [error, setError] = useState('');
+    const dispatch = useDispatch();
+    const [approvalData, setApprovalData] = useState({
+        request: '',
+        manager: '',
+        approval_date: new Date(value.format('YYYY-MM-DD')).toISOString(),
+    });
+    
+    const requests = useSelector((state) => state.requests.requests.results) ?? [];
+    const managers = useSelector((state) => state.users.users.results) ?? [];
+    useEffect(() => {
+        dispatch(fetchRequests());
+        dispatch(fetchUsers());
+    }, []);
+
+    useEffect(() => {
+        console.log(requests);
+        console.log(managers);
+    }, [requests, managers]);
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+          setError('');
+          setSuccess(false);
+        }, 5000);
+    
+        // Remember to clean up the timer when the component unmounts
+        return () => clearTimeout(timer);
+    }, [error, success]);
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        dispatch(createApproval(approvalData)).then((res) => {
+            // console.log(res.payload.fname);
+            if (res.payload?.id) {
+                setSuccess(true);
+                dispatch(fetchApprovals());
+            } else {
+                setError(res.payload);
+                console.log(res.payload);
+            }
+        }).catch((error) => {
+            // Handle any errors from the first then block
+            setError(error);
+            console.log(error);
+        });
+    }
     return <>
         {/* Recent Orders */}
         <Grid container spacing={2} sx={{ display: 'flex', justifyContent: 'center', backgroundColor: 'background.paper', pr: '12px', pb: '12px', borderRadius: 4, boxShadow: 3, padding: 2, my: '30px' }}>
@@ -29,12 +84,15 @@ const ApprovalContent = () => {
                         labelId="dept_lbl"
                         id="demo-simple-select"
                         label="Department"
-                        sx={{ minWidth: '100%' }} // Ensure select is full width
-                    // Handle value, label, onChange
+                        sx={{ minWidth: '100%' }}
+                        // Handle value, label, onChange
+                        onChange={(e) => setApprovalData((prev) => ({...prev, request: e.target.value}))}
                     >
-                        <MenuItem value={10}>12/05/2034;Yosef;ICT;Car</MenuItem>
-                        <MenuItem value={20}>12/05/2034;Abraham;Technique;Track</MenuItem>
-                        <MenuItem value={30}>12/05/2034;Yirga;HR;Car</MenuItem>
+                        {
+                            requests.map((request) => (
+                                <MenuItem value={request.id}>{` ${request.request_date.slice(0, 10)}; ${request.user.fname} ${request.user.mname}; ${request.requested_vehicle_type}`}</MenuItem>
+                            ))
+                        }
                     </Select>
                 </FormControl>
             </Grid>
@@ -45,36 +103,47 @@ const ApprovalContent = () => {
                         labelId="dept_lbl"
                         id="demo-simple-select"
                         label="Department"
-                        sx={{ minWidth: '100%' }} // Ensure select is full width
-                    // Handle value, label, onChange
+                        sx={{ minWidth: '100%' }}
+                        // Handle value, label, onChange
+                        onChange={(e) => setApprovalData((prev) => ({...prev, manager: e.target.value}))}
                     >
-                        <MenuItem value={10}>Shitahun Wale</MenuItem>
-                        <MenuItem value={20}>Yosef Tadesse</MenuItem>
-                        <MenuItem value={30}>Mitiku Afework</MenuItem>
+                        {
+                            managers.map((manager) => (
+                                <MenuItem value={manager.id}>{`${manager.fname} ${manager.mname}`}</MenuItem>
+                            ))
+                        }
                     </Select>
                 </FormControl>
             </Grid>
             <Grid item xs={12} md={6} lg={4} sx={{mt: '-7px'}}>
                 <FormControl fullWidth>
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
-                        <DemoContainer components={['DateTimePicker']}>
-                            <DateTimePicker label="Approval Date" />
+                        <DemoContainer components={['DatePicker']}>
+                        <DatePicker
+                            label='Approval date'
+                            value={value}
+                            onChange={(newValue) => setValue(newValue)}
+                        />
                         </DemoContainer>
                     </LocalizationProvider>
                 </FormControl>
             </Grid>
             <Grid item xs={12} marginTop={2}>
-                <FormControl fullWidth>
-                    <Button variant="outlined">Approve</Button>
-                </FormControl>
+                <form onSubmit={(e) => handleSubmit(e)}>
+                    <FormControl fullWidth>
+                        <Button variant="outlined" type="submit">Create</Button>
+                    </FormControl>
+                </form>
             </Grid>
 
             <Grid item xs={12} marginTop={2}>
-                <Alert icon={<CheckIcon fontSize="inherit" />} severity="success">
-                        Here is a gentle confirmation that your action was successful.
-                </Alert>
-                {/* <Alert severity="error">This is an error Alert.</Alert>
-                <Alert severity="info">This is an info Alert.</Alert>
+                {
+                    success && <Alert icon={<CheckIcon fontSize="inherit" />} severity="success">
+                            Approvals created successfully!
+                    </Alert>
+                }
+                { error && <Alert severity="error">{error}</Alert>} 
+                {/* <Alert severity="info">This is an info Alert.</Alert>
                 <Alert severity="warning">This is a warning Alert.</Alert> */}
             </Grid>
         </Grid>
