@@ -1,7 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { useDispatch } from "react-redux";
-import { updateRequest } from "../request/requestSlice";
 
 const initialState = {
     user: {},
@@ -25,6 +24,7 @@ const headers = {
     Authorization: `Bearer ${token}`,
 };
 const full_url = `${url}approvals/`;
+
 const fetchApprovals = createAsyncThunk('vehicles/fetchApprovals', async() => {
     try {
         const res = await axios.get(full_url);
@@ -34,15 +34,30 @@ const fetchApprovals = createAsyncThunk('vehicles/fetchApprovals', async() => {
     }
 });
 
-const createApproval = createAsyncThunk('approvals/createApproval', async (data) => {
-    console.log('Token: ',token);
+const createApproval = createAsyncThunk('approvals/createApproval', async (data, { dispatch }) => {
+    console.log('Data: ', data);
     try {
-        const dispatch = useDispatch();
-        dispatch(updateRequest({status: 'APPROVED'}));
+        const updateRes = await dispatch(updateRequest({ id: data.request, status: 'APPROVED' }));
+        if (updateRes.error) {
+            throw new Error(updateRes.error.message);
+        }
+        console.log('Update Request Data:', updateRes.payload);
         const res = await axios.post(full_url, data);
         return res.data;
-    } catch (error ) {
+    } catch (error) {
         return error.message;
+    }
+});
+
+
+const updateRequest = createAsyncThunk('requests/updateRequest', async (data) => {
+    try {
+        const res = await axios.put(`${url}requests/${data.id}/`, data.status);
+        console.log('Update Request Response:', res.data);
+        return res.data;
+    } catch (error) {
+        console.error('Error updating request:', error.message);
+        throw error; // Rethrow the error for proper handling by the caller
     }
 });
 

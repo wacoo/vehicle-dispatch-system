@@ -17,6 +17,7 @@ import { createApproval, fetchApprovals } from "../../redux/approval/approvalSli
 import { fetchRequests } from "../../redux/request/requestSlice";
 import { fetchUsers } from "../../redux/user/userSlice";
 import dayjs from "dayjs";
+import { updateRequest } from "../../redux/request/requestSlice";
 
 
 const ApprovalContent = () => {
@@ -57,7 +58,6 @@ const ApprovalContent = () => {
         dispatch(createApproval(approvalData)).then((res) => {
             // console.log(res.payload.fname);
             if (res.payload?.id) {
-                setSuccess(true);
                 dispatch(fetchApprovals());
             } else {
                 setError(res.payload);
@@ -67,7 +67,7 @@ const ApprovalContent = () => {
             // Handle any errors from the first then block
             setError(error);
             console.log(error);
-        });
+        });     
     }
     return <>
         {/* Recent Orders */}

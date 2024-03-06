@@ -9,6 +9,8 @@ from django.contrib.auth import authenticate
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework.decorators import action
+from rest_framework.response import Response
 
 from .models import VehicleRequest, Driver, Approval, Vehicle, Dispatch
 from .serializers import VehicleRequestSerializer, DriverSerializer, ApprovalSerializer, VehicleSerializer, DispatchSerializer, GroupSerializer, UserSerializer
@@ -89,21 +91,3 @@ class VehicleRequestViewSet(viewsets.ModelViewSet):
 
     # authentication_classes = [JWTAuthentication]
     # permission_classes = [IsAuthenticated]
-
-    # def create(self, request, *args, **kwargs):
-    #     ''' create vehicle request '''
-    #     serializer = self.get_serializer(data=request.data)
-    #     serializer.is_valid(raise_exception=True)
-    #     serializer.save(user=request.user)
-
-    #     headers = self.get_success_headers(serializer.data)
-    #     return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
-
-    # def update(self, request, *args, **kwargs):
-    #     ''' update vehicle request '''
-    #     partial = kwargs.pop('partial', False)
-    #     instance = self.get_object()
-    #     serializer = self.get_serializer(instance, data=request.data, partial=partial)
-    #     serializer.is_valid(raise_exception=True)
-    #     serializer.save()
-    #     return Response(serializer.data)

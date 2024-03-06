@@ -58,12 +58,12 @@ class VehicleRequestSerializer(serializers.ModelSerializer):
         model = VehicleRequest
         fields = ('id', 'user', 'request_date', 'description', 'requested_vehicle_type', 'destination', 'estimated_duration', 'status', 'created_at', 'updated_at')
 
-    def update(self, instance, validated_data):
-        ''' update user custom with password hashing '''
-        status = validated_data.get('status')
-        if status == 'PENDING':
-            validated_data['status'] = 'APPROVED'
-        return super(VehicleRequestSerializer, self).update(instance, validated_data)
+    # def update(self, instance, validated_data):
+    #     ''' update user custom with password hashing '''
+    #     status = validated_data.get('status')
+    #     if status == 'PENDING':
+    #         validated_data['status'] = 'APPROVED'
+    #     return super(VehicleRequestSerializer, self).update(instance, validated_data)
     
     def to_representation(self, instance):
         representation = super().to_representation(instance)
