@@ -35,29 +35,39 @@ const fetchApprovals = createAsyncThunk('vehicles/fetchApprovals', async() => {
 });
 
 const createApproval = createAsyncThunk('approvals/createApproval', async (data, { dispatch }) => {
-    console.log('Data: ', data);
+    console.log('Data: ', data.status);
+    // try {
+    //     const res = await axios.put(`${url}requests/${data.request}/`, {status: 'APPROVED'});
+    //     console.log('Update Request Response:', res.data);
+    //     return res.data;
+    // } catch (error) {
+    //     console.error('Error updating request:', error.message);
+    //     throw error;
+    // }
     try {
-        const updateRes = await dispatch(updateRequest({ id: data.request, status: 'APPROVED' }));
+        const updateRes = await dispatch(updateRequest(data.request));
         if (updateRes.error) {
             throw new Error(updateRes.error.message);
         }
         console.log('Update Request Data:', updateRes.payload);
         const res = await axios.post(full_url, data);
-        return res.data;
+        return updateRes.data;
     } catch (error) {
+        console.log(error.message);
         return error.message;
     }
 });
 
 
-const updateRequest = createAsyncThunk('requests/updateRequest', async (data) => {
+const updateRequest = createAsyncThunk('requests/updateRequest', async (id) => {
+    console.log(id);
     try {
-        const res = await axios.put(`${url}requests/${data.id}/`, data.status);
+        const res = await axios.put(`${url}requests/${id}/`, {status: 'APPROVED'});
         console.log('Update Request Response:', res.data);
         return res.data;
     } catch (error) {
         console.error('Error updating request:', error.message);
-        throw error; // Rethrow the error for proper handling by the caller
+        throw error;
     }
 });
 

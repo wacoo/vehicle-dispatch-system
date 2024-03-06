@@ -83,6 +83,8 @@ class User(AbstractBaseUser, PermissionsMixin):
 class VehicleRequestStatus(Enum):
     ''' Status enumarable '''
     PENDING = 'PENDING'
+    APPROVED = 'APPROVED'
+    REJECTED = 'REJECTED'
     ACTIVE = 'ACTIVE'
     COMPLETE = 'COMPLETE'
 
@@ -109,7 +111,7 @@ class VehicleType(Enum):
   
 class VehicleRequest(models.Model):
   ''' Vehicle request class '''
-  user = models.ForeignKey(User, on_delete=models.CASCADE)
+  user = models.ForeignKey(User, on_delete=models.CASCADE, default='')
   request_date = models.DateTimeField(default=timezone.now)
   description = models.CharField(max_length=500)
   requested_vehicle_type = models.CharField(max_length=50, choices=[(tag.name, tag.value) for tag in VehicleType], default=VehicleType.CAR.value)

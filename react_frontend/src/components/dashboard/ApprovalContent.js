@@ -18,17 +18,18 @@ import { fetchRequests } from "../../redux/request/requestSlice";
 import { fetchUsers } from "../../redux/user/userSlice";
 import dayjs from "dayjs";
 import { updateRequest } from "../../redux/request/requestSlice";
-
-
+import moment from 'moment';
 const ApprovalContent = () => {
     const [value, setValue] = useState(dayjs('2022-04-17'));
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState('');
     const dispatch = useDispatch();
+
+    const formattedDate = moment().format('YYYY-MM-DD');
     const [approvalData, setApprovalData] = useState({
         request: '',
         manager: '',
-        approval_date: new Date(value.format('YYYY-MM-DD')).toISOString(),
+        approval_date: formattedDate,
     });
     
     const requests = useSelector((state) => state.requests.requests.results) ?? [];
@@ -39,8 +40,8 @@ const ApprovalContent = () => {
     }, []);
 
     useEffect(() => {
-        console.log(requests);
-        console.log(managers);
+        // console.log(requests);
+        // console.log(managers);
     }, [requests, managers]);
 
     useEffect(() => {
@@ -90,7 +91,7 @@ const ApprovalContent = () => {
                     >
                         {
                             requests.map((request) => (
-                                <MenuItem value={request.id}>{` ${request.request_date.slice(0, 10)}; ${request.user.fname} ${request.user.mname}; ${request.requested_vehicle_type}`}</MenuItem>
+                                <MenuItem value={request.id}>{` (${request.id}) ${request.request_date.slice(0, 10)}; ${request.user.fname} ${request.user.mname}; ${request.requested_vehicle_type}; ${request.destination}`}</MenuItem>
                             ))
                         }
                     </Select>
@@ -122,7 +123,7 @@ const ApprovalContent = () => {
                         <DatePicker
                             label='Approval date'
                             value={value}
-                            onChange={(newValue) => setValue(newValue)}
+                            // onChange={(newValue) => setValue(newValue)}
                         />
                         </DemoContainer>
                     </LocalizationProvider>
@@ -131,7 +132,7 @@ const ApprovalContent = () => {
             <Grid item xs={12} marginTop={2}>
                 <form onSubmit={(e) => handleSubmit(e)}>
                     <FormControl fullWidth>
-                        <Button variant="outlined" type="submit">Create</Button>
+                        <Button variant="outlined" type="submit">Approve</Button>
                     </FormControl>
                 </form>
             </Grid>
