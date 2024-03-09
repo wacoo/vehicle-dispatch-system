@@ -13,7 +13,8 @@ const url = 'http://localhost:8000/api/';
 const signIn = createAsyncThunk('user/signIn', async (data) => {
     try {
         console.log(data);
-        const full_url = `${url}login/`;
+        // const full_url = `${url}login/`;
+        const full_url = 'http://localhost:8000/token/';
         const res = await axios.post(full_url, data);
         // console.log(res.data);
         return res.data;
@@ -22,6 +23,18 @@ const signIn = createAsyncThunk('user/signIn', async (data) => {
         return error.message;
     }
 });
+// const signIn = createAsyncThunk('user/signIn', async (data) => {
+//     try {
+//         console.log(data);
+//         const full_url = `${url}login/`;
+//         const url2 = 'http://localhost:8000/token/';
+//         const res = await axios.post(full_url, data);
+//         return res.data;
+//     } catch (error) {
+//         console.log(error);
+//         return error.message;
+//     }
+// });
 
 const user = localStorage.getItem('user');
 let token = '';
