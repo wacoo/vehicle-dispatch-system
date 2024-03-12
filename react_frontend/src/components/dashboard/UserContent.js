@@ -7,7 +7,7 @@ import Input from '@mui/joy/Input';
 import UsersTable from "./UsersTable";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { signUp } from "../../redux/user/userSlice";
+import { signIn, signUp } from "../../redux/user/userSlice";
 
 
 const UserContent = () => {
@@ -49,7 +49,20 @@ const UserContent = () => {
             setUserData((prev) => ({ ...prev, is_staff: false, is_superuser: false }));
             console.log('Here2');
         }
-        dispatch(signUp(userData));
+        dispatch(signUp(userData)).then((res) => {
+            // console.log(res.payload.fname);
+            if (res.payload?.id) {
+                setSuccess(true);
+                // dispatch(getUsers);
+            } else {
+                setError(res.payload);
+                console.log(res.payload);
+            }
+        }).catch((error) => {
+            // Handle any errors from the first then block
+            setError(error);
+            console.log(error);
+        });
     }
 
     return <>

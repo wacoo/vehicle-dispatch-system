@@ -12,21 +12,14 @@ const initialState = {
 
 const url = 'http://localhost:8000/api/';
 
-const user = localStorage.getItem('user');
-let token = '';
-if (user) {
-	token = JSON.parse(user).token;
-} else {
-	token = '';
-}
-
+const token = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')).token : '';
 const headers = {
     Authorization: `Bearer ${token}`,
 };
 const full_url = `${url}drivers/`;
 const fetchDrivers = createAsyncThunk('drivers/fetchDrivers', async() => {
     try {
-        const res = await axios.get(full_url);
+        const res = await axios.get(full_url, { headers } );
         return res.data;
     } catch(error) {
         return error.message;
@@ -35,7 +28,7 @@ const fetchDrivers = createAsyncThunk('drivers/fetchDrivers', async() => {
 
 const fetchDriver = createAsyncThunk('drivers/fetchDriver', async(id) => {
     try {
-        const res = await axios.get(`${full_url}/${id}/`);
+        const res = await axios.get(`${full_url}/${id}/`, { headers });
         return res.data;
     } catch(error) {
         return error.message;
@@ -45,7 +38,7 @@ const fetchDriver = createAsyncThunk('drivers/fetchDriver', async(id) => {
 const createDriver = createAsyncThunk('drivers/createDriver', async (data) => {
     console.log('Token: ',token);
     try {
-        const res = await axios.post(full_url, data);
+        const res = await axios.post(full_url, data, { headers });
         return res.data;
     } catch (error ) {
         return error.message;

@@ -36,8 +36,7 @@ const defaultTheme = createTheme();
 export default function SignIn() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const [user, setUser] = React.useState('');
-    const refresh = useSelector((state) => state.users.user.refresh) ?? '';
+    const user = useSelector((state) => state.users.user.user) ?? '';
     const token = useSelector((state) => state.users.user.access) ?? '';  
     console.log('parsedUser.user');
     const storedUser = localStorage.getItem('user');
@@ -47,32 +46,25 @@ export default function SignIn() {
     }
 
     React.useEffect(() => {
-      if (parsedUser === '' && token !== '') {
+      if (parsedUser === '' && user !== '') {
         const userInfo = {
-          refresh: refresh,
-          token: token,
-          user: user
+          user: user,
+          token: token
         }
         localStorage.setItem('user', JSON.stringify(userInfo));
         console.log(userInfo);
         navigate('/');
       }
-    }, [token, dispatch]);
-
-    React.useEffect(() => {
-        console.log(token);
-        console.log(refresh);
-    }, [token]);
+    }, [user, dispatch]);
     
     const handleSubmit = (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
         const credential = {
-            username: data.get('user_id'),
+            user_id: data.get('user_id'),
             password: data.get('password'),
         }
         console.log(credential);
-        setUser(credential.username);
         dispatch(signIn(credential));
   };
 
