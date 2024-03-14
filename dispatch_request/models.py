@@ -49,7 +49,7 @@ class User(AbstractBaseUser, PermissionsMixin):
   mname = models.CharField(max_length=50, blank=False)
   lname = models.CharField(max_length=50, blank=True, default='')
   department = models.CharField(max_length=200, blank=False)
-  access_level = models.IntegerField(default=0)
+  access_level = models.IntegerField(default=0)# 0 = requester, 1= appover, 2 = dispatcher, 3 = admin
   phone_number = models.CharField(max_length=50, blank=True, default='')
   is_superuser = models.BooleanField(default=False)
   is_active = models.BooleanField(default=True)
@@ -97,6 +97,12 @@ class VehicleType(Enum):
     TRUCK = 'TRUCK'
     BIKE = 'BIKE'
 
+class DestinationType(Enum):
+  ''' Destination type enumerable '''
+  ADDIS_ABABA= 'ADDIS ABABA'
+  AROUND_ADDIS_ABABA = 'AROUND ADDIS ABABA'
+  REGIONAL = 'REGIONAL'
+
 # class VehicleRequest(models.Model):
 #     ''' Vehicle request class '''
 #     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -116,7 +122,9 @@ class VehicleRequest(models.Model):
   description = models.CharField(max_length=500)
   requested_vehicle_type = models.CharField(max_length=50, choices=[(tag.name, tag.value) for tag in VehicleType], default=VehicleType.CAR.value)
   destination = models.CharField(max_length=200)
-  estimated_duration = models.IntegerField(default=0)
+  destination_type = models.CharField(max_length=50, choices=[(tag.name, tag.value) for tag in DestinationType], default=DestinationType.ADDIS_ABABA.value)
+  estimated_duration_from = models.DateTimeField()
+  estimated_duration_to = models.DateTimeField()
   status = models.CharField(max_length=50, choices=[(tag.name, tag.value) for tag in VehicleRequestStatus], default=VehicleRequestStatus.PENDING.value)
   created_at = models.DateTimeField(auto_now_add=True)
   updated_at = models.DateTimeField(auto_now=True)
@@ -156,9 +164,12 @@ class Dispatch(models.Model):
   assigned_vehicle = models.ForeignKey(Vehicle, on_delete=models.CASCADE)
   assigned_driver = models.ForeignKey(Driver, on_delete=models.CASCADE)
   assigned_date = models.DateTimeField(default=timezone.now)
+  departure_datetime = models.DateTimeField(blank=True, default='')
   departure_milage = models.IntegerField()
   departure_fuel_level = models.FloatField()
+  return_datetime = models.DateTimeField(blank=True, default=0)
   return_milage = models.IntegerField(blank=True, default=0)
   return_fuel_level = models.FloatField(blank=True, default=0.0)
+  dispatcher = models.ForeignKey(User, on_delete=models.CASCADE)
   created_at = models.DateTimeField(auto_now_add=True)
   updated_at = models.DateTimeField(auto_now=True)

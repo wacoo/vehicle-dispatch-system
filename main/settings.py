@@ -81,20 +81,33 @@ WSGI_APPLICATION = 'main.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-        # 'ENGINE': 'sql_server.pyodbc',
-        # 'NAME': 'Vehicle_dispatch',
-        # 'USER': 'saa',
-        # 'PASSWORD': '',
-        # 'HOST': 'localhost',
-        # 'PORT': '1433',
-        # 'OPTIONS': {
-        #     'driver': 'ODBC Driver 18 for SQL Server',
-        #     # 'MARS_ENABLED': True,
-        #     'TrustServerCertificate': True,
-        # }
+        # 'ENGINE': 'django.db.backends.sqlite3',
+        # 'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'sql_server.pyodbc',
+        'NAME': 'Vehicle_dispatch',
+        'USER': 'saa',
+        'PASSWORD': '',
+        'HOST': 'localhost',
+        'PORT': '1433',
+        'OPTIONS': {
+            'driver': 'ODBC Driver 18 for SQL Server',
+            # 'MARS_ENABLED': True,
+            # 'TrustServerCertificate': True,
+            'Encrypt': 'No',
+            'TrustServerCertificate': 'Yes',
+        }
     }
+
+    # 'default': {
+    #     # 'ENGINE': 'django.db.backends.sqlite3',
+    #     # 'NAME': BASE_DIR / 'db.sqlite3',
+    #     'ENGINE': 'mssql',
+    #     'NAME': 'vehicle_dispatch_django',
+    #     'HOST': 'DSN=dispatch;Trusted_Connection=yes;',
+    #     'OPTIONS': {
+    #         'driver': 'ODBC Driver 18 for SQL Server',
+    #     }    
+    # }
 }
 
 

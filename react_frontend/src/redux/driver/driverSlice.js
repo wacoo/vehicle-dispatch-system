@@ -16,6 +16,7 @@ const token = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('us
 const headers = {
     Authorization: `Bearer ${token}`,
 };
+
 const full_url = `${url}drivers/`;
 const fetchDrivers = createAsyncThunk('drivers/fetchDrivers', async() => {
     try {
