@@ -23,7 +23,7 @@ class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     # authentication_classes = [JWTAuthentication]
-    permission_classes = (IsAuthenticated,)
+    # permission_classes = (IsAuthenticated,)
 
 class UserLoginAPIView(APIView):
     # authentication_classes = [JWTAuthentication]
@@ -58,8 +58,8 @@ class DriverViewSet(viewsets.ModelViewSet):
     queryset = Driver.objects.all()
     serializer_class = DriverSerializer
 
-    authentication_classes = [JWTAuthentication]
-    permission_classes = [IsAuthenticated]
+    # authentication_classes = [JWTAuthentication]
+    # permission_classes = [IsAuthenticated]
 
 class DispatchViewSet(viewsets.ModelViewSet):
     ''' Dispatch api end point view set '''

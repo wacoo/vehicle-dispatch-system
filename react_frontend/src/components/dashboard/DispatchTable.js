@@ -74,9 +74,11 @@ export default function DispatchTable({title}) {
             <TableCell>Request</TableCell>
             <TableCell>Vehicle</TableCell>
             <TableCell>Driver</TableCell>
-            <TableCell>Assigned date</TableCell>
+            <TableCell>Dispatch date </TableCell>
+            <TableCell>Departure date </TableCell>
             <TableCell>Departure milage</TableCell>
             <TableCell>Departure fuel level</TableCell>
+            <TableCell>Return date</TableCell>
             <TableCell>Return milage</TableCell>
             <TableCell>Return fuel level</TableCell>
           </TableRow>
@@ -85,12 +87,14 @@ export default function DispatchTable({title}) {
           {dispatches.map((dispatch) => (
             <TableRow key={dispatch.id}>
               <TableCell>{dispatch.id}</TableCell>
-              <TableCell>{`${dispatch.request.request_date.slice(0, 10)}; ${dispatch.request.requested_vehicle_type}; Duration: ${dispatch.request.estimated_duration} Hrs`}</TableCell>
+              <TableCell>{`(${dispatch.request.id}) ${dispatch.request.request_date.slice(0, 10)}; ${dispatch.request.requested_vehicle_type}; ${dispatch.request.destination}`}</TableCell>
               <TableCell>{`${dispatch.vehicle.license_plate}; ${dispatch.vehicle.make} ${dispatch.vehicle.model}`}</TableCell>
               <TableCell>{`${dispatch.driver.license_number}; ${dispatch.driver.fname} ${dispatch.driver.mname}`}</TableCell>
               <TableCell>{dispatch.assigned_date.slice(0, 10)}</TableCell>
+              <TableCell>{`${dispatch.departure_date}: ${dispatch.departure_time}`}</TableCell>
               <TableCell>{dispatch.departure_milage}</TableCell>
               <TableCell>{dispatch.departure_fuel_level}</TableCell>
+              <TableCell>{`${dispatch.return_date}: ${dispatch.return_time}`}</TableCell>
               <TableCell>{dispatch.return_milage}</TableCell>
               <TableCell align="right">{`${dispatch.return_fuel_level}`}</TableCell>
             </TableRow>

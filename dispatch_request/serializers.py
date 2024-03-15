@@ -48,7 +48,7 @@ class VehicleRequestLimitedSerializer(serializers.ModelSerializer):
     class Meta:
         ''' Request meta '''
         model = VehicleRequest
-        fields = ('id', 'request_date','requested_vehicle_type', 'destination', 'estimated_duration', 'status')
+        fields = ('id', 'request_date','requested_vehicle_type', 'destination_type', 'destination', 'estimated_duration_hrs', 'status')
 
 class VehicleRequestSerializer(serializers.ModelSerializer):
     '''Vehicle request serializer class'''
@@ -56,8 +56,8 @@ class VehicleRequestSerializer(serializers.ModelSerializer):
     class Meta:
         ''' Request meta '''
         model = VehicleRequest
-        fields = ('id', 'user', 'request_date', 'description', 'requested_vehicle_type', 'destination', 'estimated_duration', 'status', 'created_at', 'updated_at')
-        read_only_fields = ('id', 'user', 'request_date', 'description', 'requested_vehicle_type', 'destination', 'estimated_duration', 'created_at', 'updated_at')
+        fields = ('id', 'user', 'request_date', 'description', 'destination', 'requested_vehicle_type', 'destination_type', 'estimated_duration_hrs', 'status', 'created_at', 'updated_at')
+        # read_only_fields = ('id', 'user', 'request_date', 'description', 'destination', 'requested_vehicle_type', 'destination_type', 'estimated_duration_hrs', 'created_at', 'updated_at')
     # def update(self, instance, validated_data):
     #     ''' update user custom with password hashing '''
     #     status = validated_data.get('status')
@@ -122,7 +122,7 @@ class DispatchSerializer(serializers.ModelSerializer):
     class Meta:
         ''' Dispatch meta '''
         model = Dispatch
-        fields = ('id', 'vehicle_request', 'assigned_vehicle', 'assigned_driver', 'assigned_date', 'departure_milage', 'departure_fuel_level', 'return_milage', 'return_fuel_level', 'created_at', 'updated_at')
+        fields = ('id', 'vehicle_request', 'assigned_vehicle', 'assigned_driver', 'assigned_date', 'departure_date', 'departure_time',  'departure_milage', 'departure_fuel_level', 'return_date', 'return_time', 'return_milage', 'return_fuel_level', 'dispatcher', 'created_at', 'updated_at')
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)

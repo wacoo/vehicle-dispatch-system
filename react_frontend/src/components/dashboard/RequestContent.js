@@ -25,7 +25,7 @@ const RequestContent = () => {
         description: '',
         requested_vehicle_type: '',
         destination: '',
-        estimated_duration: '',
+        estimated_duration_hrs: '',
         status: 'PENDING',
     });
     const [success, setSuccess] = useState(false);
@@ -144,7 +144,7 @@ const RequestContent = () => {
             </Grid>
             <Grid item xs={12} md={6} lg={4}>
                 <FormControl fullWidth>
-                    <TextField label="Duration" type="number" name="duration" id="duration" onChange={(e) => setRequestData((prev) => ({ ...prev, estimated_duration: e.target.value }))} />
+                    <TextField label="Estimated duration" type="number" name="duration" id="duration" onChange={(e) => setRequestData((prev) => ({ ...prev, estimated_duration_hrs: e.target.value }))} />
                 </FormControl>
             </Grid>
             <Grid item xs={12} md={6} lg={4}>

@@ -77,7 +77,7 @@ export default function RequestsTable({title}) {
             <TableCell>Request date</TableCell>
             <TableCell>Vehicle type</TableCell>
             <TableCell>Destination</TableCell>
-            <TableCell>Duration (Hrs.)</TableCell>
+            <TableCell>Estimated duration (Hrs)</TableCell>
             <TableCell  align="right" >Status</TableCell>
           </TableRow>
         </TableHead>
@@ -97,7 +97,7 @@ export default function RequestsTable({title}) {
               <TableCell>{request.request_date.slice(0, 10)}</TableCell>
               <TableCell>{request.requested_vehicle_type}</TableCell>
               <TableCell>{request.destination}</TableCell>
-              <TableCell>{request.estimated_duration}</TableCell>
+              <TableCell>{request.estimated_duration_hrs}</TableCell>
               <TableCell align="right">{request.status}</TableCell>
             </TableRow>
           ))}

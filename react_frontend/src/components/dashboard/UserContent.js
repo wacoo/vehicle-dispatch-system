@@ -24,6 +24,7 @@ const UserContent = () => {
         confirm: '',
         access_level: '',
         phone_number: '',
+        dispatcher: '',
         is_staff: false,
         is_superuser: false,
     });

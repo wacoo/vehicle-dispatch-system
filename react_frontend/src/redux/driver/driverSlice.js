@@ -20,7 +20,7 @@ const headers = {
 const full_url = `${url}drivers/`;
 const fetchDrivers = createAsyncThunk('drivers/fetchDrivers', async() => {
     try {
-        const res = await axios.get(full_url, { headers } );
+        const res = await axios.get(full_url);
         return res.data;
     } catch(error) {
         return error.message;
@@ -29,7 +29,7 @@ const fetchDrivers = createAsyncThunk('drivers/fetchDrivers', async() => {
 
 const fetchDriver = createAsyncThunk('drivers/fetchDriver', async(id) => {
     try {
-        const res = await axios.get(`${full_url}/${id}/`, { headers });
+        const res = await axios.get(`${full_url}/${id}/`);
         return res.data;
     } catch(error) {
         return error.message;
@@ -39,7 +39,7 @@ const fetchDriver = createAsyncThunk('drivers/fetchDriver', async(id) => {
 const createDriver = createAsyncThunk('drivers/createDriver', async (data) => {
     console.log('Token: ',token);
     try {
-        const res = await axios.post(full_url, data, { headers });
+        const res = await axios.post(full_url, data);
         return res.data;
     } catch (error ) {
         return error.message;

@@ -123,8 +123,7 @@ class VehicleRequest(models.Model):
   requested_vehicle_type = models.CharField(max_length=50, choices=[(tag.name, tag.value) for tag in VehicleType], default=VehicleType.CAR.value)
   destination = models.CharField(max_length=200)
   destination_type = models.CharField(max_length=50, choices=[(tag.name, tag.value) for tag in DestinationType], default=DestinationType.ADDIS_ABABA.value)
-  estimated_duration_from = models.DateTimeField()
-  estimated_duration_to = models.DateTimeField()
+  estimated_duration_hrs = models.FloatField(default=0.00)
   status = models.CharField(max_length=50, choices=[(tag.name, tag.value) for tag in VehicleRequestStatus], default=VehicleRequestStatus.PENDING.value)
   created_at = models.DateTimeField(auto_now_add=True)
   updated_at = models.DateTimeField(auto_now=True)
@@ -134,8 +133,8 @@ class Driver(models.Model):
   fname = models.CharField(max_length=50)
   mname = models.CharField(max_length=50)
   lname = models.CharField(max_length=50, blank=True, default='')
-  phone_number = models.CharField(max_length=20)
-  license_number = models.CharField(max_length=20)
+  phone_number = models.CharField(max_length=20, unique=True)
+  license_number = models.CharField(max_length=20, unique=True)
   created_at = models.DateTimeField(auto_now_add=True)
   updated_at = models.DateTimeField(auto_now=True)
 
@@ -144,8 +143,9 @@ class Vehicle(models.Model):
   make = models.CharField(max_length=200)
   model = models.CharField(max_length=200)
   year = models.IntegerField()
+  km_per_liter = models.FloatField(blank=True, default=0)
   current_milage = models.IntegerField(blank=True, default=0)
-  license_plate = models.CharField(max_length=20)
+  license_plate = models.CharField(max_length=20, unique=True)
   fuel_level = models.FloatField(blank=True, default=0)
   created_at = models.DateTimeField(auto_now_add=True)
   updated_at = models.DateTimeField(auto_now=True)
@@ -164,12 +164,32 @@ class Dispatch(models.Model):
   assigned_vehicle = models.ForeignKey(Vehicle, on_delete=models.CASCADE)
   assigned_driver = models.ForeignKey(Driver, on_delete=models.CASCADE)
   assigned_date = models.DateTimeField(default=timezone.now)
-  departure_datetime = models.DateTimeField(blank=True, default='')
+  departure_date = models.DateField(default='')
+  departure_time = models.TimeField(default='')
   departure_milage = models.IntegerField()
   departure_fuel_level = models.FloatField()
-  return_datetime = models.DateTimeField(blank=True, default=0)
+  return_date = models.DateField(blank=True, default='')
+  return_time = models.TimeField(blank=True, default='')
   return_milage = models.IntegerField(blank=True, default=0)
   return_fuel_level = models.FloatField(blank=True, default=0.0)
   dispatcher = models.ForeignKey(User, on_delete=models.CASCADE)
   created_at = models.DateTimeField(auto_now_add=True)
   updated_at = models.DateTimeField(auto_now=True)
+
+
+class FuelType(Enum):
+  ''' Destination type enumerable '''
+  BENZINE= 'BENZINE'
+  NAFTA = 'NAFTA'
+
+class Refuel(models.Model):
+  ''' Refuel class'''
+  vehicle = models.ForeignKey(Vehicle, on_delete=models.CASCADE)
+  refuel_request_date = models.DateField(default='')
+  refuel_date = models.DateField(default='')
+  fuel_type = models.CharField(max_length=50, choices=[(tag.name, tag.value) for tag in FuelType], default=FuelType.NAFTA.value)
+  km_before_refuel = models.IntegerField(max_length=20)
+  milage_in_km = models.IntegerField(max_length=20)
+  km_per_liter = models.FloatField(max_length=20)
+  current_fuel_level = models.FloatField(max_length=50)
+  remark = models.CharField(max_length=500, default='')

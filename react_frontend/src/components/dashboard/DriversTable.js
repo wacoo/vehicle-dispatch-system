@@ -83,7 +83,7 @@ export default function DriversTable({title}) {
               <TableCell>{driver.id}</TableCell>
               <TableCell>{`${driver.fname} ${driver.mname}`}</TableCell>
               <TableCell>{driver.phone_number}</TableCell>
-              <TableCell>{driver.license_number}</TableCell>
+              <TableCell  align="right">{driver.license_number}</TableCell>
             </TableRow>
           ))}
         </TableBody>

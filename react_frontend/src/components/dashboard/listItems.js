@@ -55,6 +55,12 @@ const MainListItems = () => {
         </ListItemIcon>
         <ListItemText primary="Approvals" />
       </ListItemButton>
+      <ListItemButton onClick={() => navigate('/refuels')}>
+        <ListItemIcon>
+          <ApprovalIcon />
+        </ListItemIcon>
+        <ListItemText primary="Refuels" />
+      </ListItemButton>
       <ListItemButton onClick={() => navigate('/users')}>
         <ListItemIcon>
           <PeopleIcon />

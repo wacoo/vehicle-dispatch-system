@@ -5,6 +5,7 @@ import Dashboard from './components/dashboard/Dashboard';
 import SignIn from './components/SignIn';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import NotFound from './components/NotFound';
+import RefuelContent from './components/dashboard/RefuelContent';
 
 function App() {
   // const theme = useTheme();
@@ -27,6 +28,7 @@ function App() {
         <Route path="/approvals" element={<Dashboard active='Approvals'/>} />
         <Route path="/users" element={<Dashboard active='Users'/>} />
         <Route path="/signin" element={<SignIn />} />
+        <Route path="/refuels" element={<RefuelContent />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
