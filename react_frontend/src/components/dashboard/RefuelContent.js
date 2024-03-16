@@ -12,6 +12,7 @@ import dayjs from "dayjs";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import RefuelsTable from "./RefuelsTable";
 
 
 const RefuelContent = () => {
@@ -79,13 +80,13 @@ const RefuelContent = () => {
                     </Select>
                 </FormControl>
             </Grid>
-        </Grid>
-        <Grid item xs={12} md={6} lg={4} sx={{ mt: '-7px' }}>
+
+            <Grid item xs={12} md={6} lg={4} sx={{ mt: '-7px' }}>
             <FormControl fullWidth>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DemoContainer components={['DateTimePicker']}>
                         <DatePicker
-                            label='Refuel dequest date'
+                            label='Refuel request date'
                             value={rrdate}
                             onChange={(newValue) => setRRdate(newValue)}
                         />
@@ -93,6 +94,7 @@ const RefuelContent = () => {
                 </LocalizationProvider>
             </FormControl>
         </Grid>
+
         <Grid item xs={12} md={6} lg={4}>
             <FormControl fullWidth>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -106,6 +108,8 @@ const RefuelContent = () => {
                 </LocalizationProvider>
             </FormControl>
         </Grid>
+
+
         <Grid item xs={12} md={6} lg={4}>
             <FormControl fullWidth>
                 <InputLabel id="fuel_type" sx={{ marginBottom: '8px' }}>Fuel type</InputLabel>
@@ -122,6 +126,7 @@ const RefuelContent = () => {
                 </Select>
             </FormControl>
         </Grid>
+
         <Grid item xs={12} md={6} lg={4}>
             <FormControl fullWidth>
                 <TextField label="KM before refuel" type="number" name="fname" id="fname" onChange={(e) => setRefuelData((prev) => ({ ...prev, km_before_refuel: e.target.value }))} />
@@ -133,6 +138,8 @@ const RefuelContent = () => {
                 <TextField label="Milage in KM" type="number" name="fname" id="fname" onChange={(e) => setRefuelData((prev) => ({ ...prev, milage_in_km: e.target.value }))} />
             </FormControl>
         </Grid>
+
+
         <Grid item xs={12} md={6} lg={4}>
             <FormControl fullWidth>
                 <TextField label="KM per liter" type="number" name="fname" id="fname" onChange={(e) => setRefuelData((prev) => ({ ...prev, km_per_liter: e.target.value }))} />
@@ -143,17 +150,36 @@ const RefuelContent = () => {
                 <TextField label="Current fuel level" type="number" name="fname" id="fname" onChange={(e) => setRefuelData((prev) => ({ ...prev, current_fuel_level: e.target.value }))} />
             </FormControl>
         </Grid>
-        <Grid item xs={12} md={6} lg={4}>
+        <Grid item xs={12}>
             <FormControl fullWidth>
                 <TextField label="Remark" type="text" name="fname" id="fname" multiline onChange={(e) => setRefuelData((prev) => ({ ...prev, remark: e.target.value }))} />
             </FormControl>
         </Grid>
+            <Grid item xs={12} marginTop={2}>
+                <form onSubmit={(e)=> handleSubmit(e)}>
+                    <FormControl fullWidth>
+                        <Button variant="outlined" type="submit">Create</Button>
+                    </FormControl>
+                </form>                
+            </Grid>
+
+            <Grid item xs={12} marginTop={2}>
+                {
+                    success && <Alert icon={<CheckIcon fontSize="inherit" />} severity="success">
+                            Refuel created successfully!
+                    </Alert>
+                }
+                { error && <Alert severity="error">{error}</Alert>} 
+                {/* <Alert severity="info">This is an info Alert.</Alert>
+                <Alert severity="warning">This is a warning Alert.</Alert> */}
+            </Grid>
+        </Grid>
 
         <Grid container spacing={2} sx={{ display: 'flex', justifyContent: 'center', backgroundColor: 'background.paper', pr: '12px', pb: '12px', borderRadius: 4, boxShadow: 3, padding: 2, my: '30px' }}>
-            <Typography variant="h4">Users</Typography>
+            <Typography variant="h4">Refuels</Typography>
         </Grid>
         <Grid container spacing={2} sx={{ display: 'flex', justifyContent: 'center', backgroundColor: 'background.paper', pr: '12px', pb: '12px', borderRadius: 4, boxShadow: 3, padding: 2, my: '30px' }}>
-            <UsersTable />
+            <RefuelsTable />
         </Grid>
     </>
 

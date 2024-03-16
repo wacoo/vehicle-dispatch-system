@@ -12,6 +12,7 @@ import AssignmentIcon from '@mui/icons-material/Assignment';
 import AltRouteIcon from '@mui/icons-material/AltRoute';
 import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 import ApprovalIcon from '@mui/icons-material/Approval';
+import LocalGasStationIcon from '@mui/icons-material/LocalGasStation';
 import AirlineSeatReclineNormalIcon from '@mui/icons-material/AirlineSeatReclineNormal';
 import { useNavigate } from 'react-router-dom';
 
@@ -57,7 +58,7 @@ const MainListItems = () => {
       </ListItemButton>
       <ListItemButton onClick={() => navigate('/refuels')}>
         <ListItemIcon>
-          <ApprovalIcon />
+          <LocalGasStationIcon />
         </ListItemIcon>
         <ListItemText primary="Refuels" />
       </ListItemButton>
