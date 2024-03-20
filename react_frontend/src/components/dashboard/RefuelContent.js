@@ -13,6 +13,8 @@ import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import RefuelsTable from "./RefuelsTable";
+import { createRefuel, fetchRefuels } from "../../redux/refuel/refuelSlice";
+import { fetchVehicles } from "../../redux/vehicle/vehicleSlice";
 
 
 const RefuelContent = () => {
@@ -24,17 +26,31 @@ const RefuelContent = () => {
     const vehicles = useSelector((state) => state.vehicles.vehicles.results) ?? [];
     const [refuelData, setRefuelData] = useState({
         vehicle: '',
-        refuel_request_date: '',
-        refuel_date: '',
-        fuel_type: '',
+        refuel_request_date: rrdate.format('YYYY-MM-DD'), // Format date directly here
+        fuel_type: '',        
+        refuel_date: rdate.format('YYYY-MM-DD'), // Format date directly here
         km_before_refuel: '',
         milage_in_km: '',
         km_per_liter: '',
         current_fuel_level: '',
-        phone_number: '',
-        dispatcher: '',
         remark: '',
     });
+
+    function formatDate(date) {
+        return date.format('YYYY-MM-DD'); // Format date using dayjs
+    }
+
+    useEffect(() => {
+        setRefuelData(prevState => ({
+            ...prevState,
+            refuel_request_date: formatDate(rrdate),
+            refuel_date: formatDate(rdate),
+        }));
+    }, [rrdate, rdate]);
+
+    useEffect(() => {
+        dispatch(fetchVehicles());
+    }, []);
 
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -49,7 +65,17 @@ const RefuelContent = () => {
     //fields = ('id', 'username', 'fname', 'mname', 'lname', 'department', 'access_level', 'password', 'is_staff', 'is_superuser')
     const handleSubmit = (e) => {
         e.preventDefault();
-    }
+        dispatch(createRefuel(refuelData)).then((res) => {
+            // console.log(res.payload.fname);
+            if (res.payload?.id) {
+                setSuccess(true);
+                dispatch(fetchRefuels());
+            } else {
+                setError(res.payload);
+                console.log(res.payload);
+            }
+        }
+    )}
 
     return <>
         {/* Recent Orders */}

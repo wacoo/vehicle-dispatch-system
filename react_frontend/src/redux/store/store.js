@@ -5,6 +5,7 @@ import vehicleReducer from '../vehicle/vehicleSlice';
 import requestReducer from '../request/requestSlice';
 import dispatchReducer from '../dispatch/dispatchSlice';
 import approvalReducer from '../approval/approvalSlice';
+import refuelReducer from '../refuel/refuelSlice';
 const store = configureStore({
     reducer: {
         users: userReducer,
@@ -13,6 +14,7 @@ const store = configureStore({
         requests: requestReducer,
         dispatches: dispatchReducer,
         approvals: approvalReducer,
+        refuels: refuelReducer
     }
 });
 

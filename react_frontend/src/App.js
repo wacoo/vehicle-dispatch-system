@@ -28,7 +28,7 @@ function App() {
         <Route path="/approvals" element={<Dashboard active='Approvals'/>} />
         <Route path="/users" element={<Dashboard active='Users'/>} />
         <Route path="/signin" element={<SignIn />} />
-        <Route path="/refuels" element={<RefuelContent />} />
+        <Route path="/refuels" element={<Dashboard active='Refuel'/>} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>

@@ -23,22 +23,25 @@ import { fetchUsers } from "../../redux/user/userSlice";
 
 
 const DispatchContent = () => {
-    const [value, setValue] = useState(dayjs('2024-04-17'));
+    const [value, setValue] = useState(dayjs(getTodayAsString()));
     const [ddate, setDdate] = useState(dayjs('2024-04-17'));
     const [rdate, setRdate] = useState(dayjs('2024-04-17'));
+    const [dtime, setDtime] = useState('12: 00 AM');
+    const [rtime, setRtime] = useState('12: 00 AM');
     const [dispatchData, setDispatchData] = useState({
         vehicle_request: '',
         assigned_driver: '',
         assigned_vehicle: '',
         assigned_date: new Date(value.format('YYYY-MM-DD')).toISOString(),
-        departure_date: new Date(ddate.format('YYYY-MM-DD')).toISOString(),
+        departure_date: formatDate(ddate),
         departure_time: '00:00:00',
         departure_milage: '',
         departure_fuel_level: '',
-        return_date: new Date(rdate.format('YYYY-MM-DD')).toISOString(),
+        return_date: formatDate(rdate),
         return_time: '00:00:00',
         return_milage: 0,
-        return_fuel_level: 0.0
+        return_fuel_level: 0.0,
+        dispatcher: ''
     });
 
     const [success, setSuccess] = useState(false);
@@ -76,6 +79,35 @@ const DispatchContent = () => {
         return () => clearTimeout(timer);
     }, [error, success]);
 
+    function formatDate(dateString) {
+        const date = new Date(dateString);
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0'); // Month is 0-indexed
+        const day = String(date.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    }
+
+    function getTodayAsString() {
+        const today = new Date();
+        const year = today.getFullYear();
+        const month = String(today.getMonth() + 1).padStart(2, '0'); // Month is 0-indexed
+        const day = String(today.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    }
+    function convertTo24HourFormat(time12h) {
+        var [time, period] = time12h.split(' ');
+        var [hours, minutes] = time.split(':');
+        var seconds = '00'; // Adding seconds part
+        
+        if (period === 'PM' && hours !== '12') {
+            hours = String(Number(hours) + 12);
+        } else if (period === 'AM' && hours === '12') {
+            hours = '00';
+        }
+        
+        return `${hours}:${minutes}:${seconds}`;
+    }
+      
     const handleSubmit = (e) => {
         e.preventDefault();
         console.log(dispatchData);
@@ -121,7 +153,7 @@ const DispatchContent = () => {
                     >
                         {
                             requests.map((request) => (
-                                <MenuItem value={request.id}>{`${request.request_date.slice(0, 10)}; ${request.user.fname} ${request.user.mname}; ${request.user.department}`}</MenuItem>
+                                <MenuItem value={request.id}>{`(${request.id}) ${request.request_date.slice(0, 10)}; ${request.user.fname} ${request.user.mname}; ${request.user.department}; ${request.destination}`}</MenuItem>
                             ))
                         }
                     </Select>
@@ -140,7 +172,7 @@ const DispatchContent = () => {
                     >
                         {
                             vehicles.map((vehicle) => (
-                                <MenuItem value={vehicle.id}>{`${vehicle.license_plate}; ${vehicle.make} ${vehicle.model}; ${vehicle.type}`}</MenuItem>
+                                <MenuItem value={vehicle.id}>{`(${vehicle.id}) ${vehicle.license_plate}; ${vehicle.make} ${vehicle.model}; ${vehicle.type}`}</MenuItem>
                             ))
                         
                         }
@@ -160,7 +192,7 @@ const DispatchContent = () => {
                     >
                         {
                             drivers.map((driver) => (
-                                <MenuItem value={driver.id}>{`${driver.fname} ${driver.mname}`}</MenuItem>
+                                <MenuItem value={driver.id}>{`(${driver.license_number}) ${driver.fname} ${driver.mname}`}</MenuItem>
                             ))
                         
                         }
@@ -204,7 +236,7 @@ const DispatchContent = () => {
                         label="Select Vehicle"
                         sx={{ minWidth: '100%' }}
                         // Handle value, label, onChange
-                        onChange={(e) => setDispatchData((prev) => ({...prev, departure_time: e.target.value}))}
+                        onChange={(e) => setDispatchData((prev) => ({...prev, departure_time: convertTo24HourFormat(e.target.value)}))}
                     >
                         {
                             Object.values(times).map((val) => (
@@ -247,7 +279,7 @@ const DispatchContent = () => {
                         label="Return time"
                         sx={{ minWidth: '100%' }}
                         // Handle value, label, onChange
-                        onChange={(e) => setDispatchData((prev) => ({...prev, return_time: e.target.value}))}
+                        onChange={(e) => setDispatchData((prev) => ({...prev, return_time: convertTo24HourFormat(e.target.value)}))}
                     >
                         {
                             Object.values(times).map((val) => (
@@ -277,7 +309,7 @@ const DispatchContent = () => {
                         label="Department"
                         sx={{ minWidth: '100%' }}
                         // Handle value, label, onChange
-                        onChange={(e) => setDispatchData((prev) => ({ ...prev, user: e.target.value }))}
+                        onChange={(e) => setDispatchData((prev) => ({ ...prev, dispatcher: e.target.value }))}
                     >
                         {dispatchers.map((user) => (
                             <MenuItem key={user.id} value={user.id}>
