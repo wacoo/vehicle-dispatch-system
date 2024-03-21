@@ -25,7 +25,7 @@ const RefuelContent = () => {
     const [rdate, setRdate] = useState(dayjs('2022-04-17'));
     const vehicles = useSelector((state) => state.vehicles.vehicles.results) ?? [];
     const [refuelData, setRefuelData] = useState({
-        vehicle: '',
+        vehicle: '1',
         refuel_request_date: rrdate.format('YYYY-MM-DD'), // Format date directly here
         refuel_date: rdate.format('YYYY-MM-DD'), // Format date directly here
         fuel_type: '',        
@@ -43,7 +43,7 @@ const RefuelContent = () => {
     useEffect(() => {
         setRefuelData(prevState => ({
             ...prevState,
-            refuel_request_date:  rrdate.format('YYYY-MM-DD'),
+            refuel_request_date: rrdate.format('YYYY-MM-DD'),
             refuel_date: rdate.format('YYYY-MM-DD'),
         }));
     }, [rrdate, rdate]);
@@ -71,7 +71,7 @@ const RefuelContent = () => {
                 setSuccess(true);
                 dispatch(fetchRefuels());
             } else {
-                setError(res.payload);
+                // setError(res.payload);
                 console.log(res.payload);
             }
         }

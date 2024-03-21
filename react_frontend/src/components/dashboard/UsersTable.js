@@ -6,6 +6,8 @@ import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Title from './Title';
+import { fetchUsers } from '../../redux/user/userSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
 // Generate Order Data
 function createData(id, date, name, shipTo, paymentMethod, amount) {
@@ -53,24 +55,39 @@ function preventDefault(event) {
 }
 
 export default function DriversTable({title}) {
+  const users = useSelector((state) => state.users.users.results) ?? [];
+  const dispatch = useDispatch();
+    React.useEffect(() => {
+      console.log(users);
+    }, [users]);
+
+    React.useEffect(() => {
+        dispatch(fetchUsers());
+    }, []);
+  
   return (
     <React.Fragment>
       <Title>{title}</Title>
       <Table size="small">
         <TableHead>
           <TableRow>
-          <TableCell>ID</TableCell>
+            <TableCell>ID</TableCell>
             <TableCell>Name</TableCell>
+            <TableCell>Username</TableCell>
             <TableCell>Phone</TableCell>
-            <TableCell>Lisense number</TableCell>
+            <TableCell>Department</TableCell>
+            <TableCell>Role</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
-            <TableRow key={row.id}>
-              <TableCell>{row.date}</TableCell>
-              <TableCell>{row.name}</TableCell>
-              <TableCell>{row.shipTo}</TableCell>
+          {users.map((user) => (
+            <TableRow key={user.id}>
+              <TableCell>{user.id}</TableCell>
+              <TableCell>{`${user.fname} ${user.mname}`}</TableCell>
+              <TableCell>{user.username}</TableCell>
+              <TableCell>{user.phone_number}</TableCell>
+              <TableCell>{user.department}</TableCell>
+              <TableCell>{user.access_level}</TableCell>
             </TableRow>
           ))}
         </TableBody>

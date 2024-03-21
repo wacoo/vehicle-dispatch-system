@@ -28,6 +28,7 @@ import DriverContent from './DriverContent';
 import ApprovalContent from './ApprovalContent';
 import { useNavigate } from 'react-router-dom';
 import RefuelContent from './RefuelContent';
+import DepartmentContent from './DepartmentContent';
 
 function Copyright(props) {
   return (
@@ -197,6 +198,7 @@ export default function Dashboard({ active }) {
           {active === 'Drivers' && <DriverContent />}
           {active === 'Approvals' && <ApprovalContent />}
           {active === 'Users' && <UserContent />}
+          {active === 'Departments' && <DepartmentContent />}
           {active === 'Refuel' && <RefuelContent />}
             {/* <DashboardContent /> */}
             <Copyright sx={{ pt: 4 }} />

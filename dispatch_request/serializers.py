@@ -3,7 +3,7 @@ from django.contrib.auth.models import Group
 from .models import User
 from rest_framework import serializers
 from django.contrib.auth.hashers import make_password
-from .models import VehicleRequest, Driver, Approval, Vehicle, Dispatch, Refuel
+from .models import VehicleRequest, Driver, Approval, Vehicle, Dispatch, Refuel, Department
 
 class UserLimitedSerializer(serializers.ModelSerializer):
     ''' only for Eager fetch '''
@@ -91,7 +91,7 @@ class VehicleLimitedSerializer(serializers.ModelSerializer):
     class Meta:
         ''' Vehicle meta '''
         model= Vehicle
-        fields = ('id', 'make', 'model', 'license_plate')
+        fields = ('id', 'make', 'model', 'year', 'type', 'license_plate')
 
 class VehicleSerializer(serializers.ModelSerializer):
     ''' Vehicle serializer '''
@@ -156,5 +156,21 @@ class DispatchSerializer(serializers.ModelSerializer):
 class RefuelSerializer(serializers.ModelSerializer):
     class Meta:
         model = Refuel
-        #fields=('vehicle', 'refuel_request_date', 'refuel_date', 'fuel_type', 'km_before_refuel', 'milage_in_km', 'km_per_liter', 'current_fuel_level', 'remark')
+        fields=('id', 'vehicle', 'refuel_request_date', 'refuel_date', 'fuel_type', 'km_before_refuel', 'milage_in_km', 'km_per_liter', 'current_fuel_level', 'remark')
+        #fields = '__all__'
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        try:
+            representation['vehicle'] = VehicleLimitedSerializer(instance.vehicle).data
+        except Vehicle.DoesNotExist:
+            representation['vehicle'] = None
+        # except VehicleRequest.DoesNotExist:
+        #     representation['request'] = None
+        return representation
+    
+class DepartmentSerializer(serializers.ModelSerializer):
+    ''' Department serializer '''
+    class Meta:
+        ''' Department serializer meta'''
+        model = Department
         fields = '__all__'

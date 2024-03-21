@@ -14,6 +14,7 @@ import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 import ApprovalIcon from '@mui/icons-material/Approval';
 import LocalGasStationIcon from '@mui/icons-material/LocalGasStation';
 import AirlineSeatReclineNormalIcon from '@mui/icons-material/AirlineSeatReclineNormal';
+import BusinessIcon from '@mui/icons-material/Business';
 import { useNavigate } from 'react-router-dom';
 
 const MainListItems = () => {
@@ -28,7 +29,7 @@ const MainListItems = () => {
       </ListItemButton>
       <ListItemButton onClick={() => navigate('/drivers')}>
         <ListItemIcon>
-          <DirectionsCarIcon />
+          <AirlineSeatReclineNormalIcon />
         </ListItemIcon>
         <ListItemText primary="Drivers" />
       </ListItemButton>
@@ -67,6 +68,12 @@ const MainListItems = () => {
           <PeopleIcon />
         </ListItemIcon>
         <ListItemText primary="Users" />
+      </ListItemButton>
+      <ListItemButton onClick={() => navigate('/departments')}>
+        <ListItemIcon>
+          <BusinessIcon />
+        </ListItemIcon>
+        <ListItemText primary="Departments" />
       </ListItemButton>
       <ListItemButton>
         <ListItemIcon>

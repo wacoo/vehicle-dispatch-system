@@ -49,7 +49,7 @@ class User(AbstractBaseUser, PermissionsMixin):
   mname = models.CharField(max_length=50, blank=False)
   lname = models.CharField(max_length=50, blank=True, default='')
   department = models.CharField(max_length=200, blank=False)
-  access_level = models.IntegerField(default=0)# 0 = requester, 1= appover, 2 = dispatcher, 3 = admin
+  access_level = models.IntegerField(default=0)# 0 = requester, 1= approver, 2 = dispatcher, 3 = admin
   phone_number = models.CharField(max_length=50, blank=True, default='')
   is_superuser = models.BooleanField(default=False)
   is_active = models.BooleanField(default=True)
@@ -194,3 +194,10 @@ class Refuel(models.Model):
   km_per_liter = models.FloatField()
   current_fuel_level = models.FloatField()
   remark = models.CharField(max_length=500, default='')
+
+class Department(models.Model):
+  ''' Refuel class'''
+  dept_name = models.CharField(max_length=200)
+  location = models.CharField(max_length=100, default='')
+  extension = models.CharField(max_length=50, default='')
+  phone_number = models.CharField(max_length=100, default='')

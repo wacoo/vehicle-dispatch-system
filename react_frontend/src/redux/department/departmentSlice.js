@@ -2,9 +2,8 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
 const initialState = {
-    user: {},
-    refuels: [],
-    newRefuel: {},
+    departments: [],
+    newDeparment: {},
     isLoading: false,
     error: undefined
 }
@@ -16,8 +15,8 @@ const headers = {
     Authorization: `Bearer ${token}`,
 };
 
-const full_url = `${url}refuels/`;
-const fetchRefuels = createAsyncThunk('refuels/fetchRefuels', async() => {
+const full_url = `${url}departments/`;
+const fetchDepartments = createAsyncThunk('departments/fetchDepartments', async() => {
     try {
         const res = await axios.get(full_url);
         return res.data;
@@ -35,7 +34,7 @@ const fetchRefuels = createAsyncThunk('refuels/fetchRefuels', async() => {
 //     }
 // });
 
-const createRefuel = createAsyncThunk('refuels/createRefuel', async (data) => {
+const createDepartment = createAsyncThunk('departments/createDepartment', async (data) => {
     // console.log('Data: ',data);
     try {
         const res = await axios.post(full_url, data);
@@ -45,32 +44,32 @@ const createRefuel = createAsyncThunk('refuels/createRefuel', async (data) => {
     }
 });
 
-const refuelSlice = createSlice({
-    name: 'refuels',
+const departmentSlice = createSlice({
+    name: 'departments',
     initialState,
     extraReducers: (builder) => {
         builder
-        .addCase(createRefuel.pending, (state, action) => {
+        .addCase(createDepartment.pending, (state, action) => {
             state.isLoading = true;
         })
-        .addCase(createRefuel.fulfilled, (state, action) => {
+        .addCase(createDepartment.fulfilled, (state, action) => {
             state.isLoading = false;
-            state.newRefuel = action.payload;
+            state.newDeparment = action.payload;
             // console.log(action.payload);
         })
-        .addCase(createRefuel.rejected, (state, action) => {
+        .addCase(createDepartment.rejected, (state, action) => {
             state.isLoading = false;
             state.error = action.error.message;
         })
-        .addCase(fetchRefuels.pending, (state, action) => {
+        .addCase(fetchDepartments.pending, (state, action) => {
             state.isLoading = true;
         })
-        .addCase(fetchRefuels.fulfilled, (state, action) => {
+        .addCase(fetchDepartments.fulfilled, (state, action) => {
             state.isLoading = false;
-            state.refuels = action.payload;
+            state.departments = action.payload;
             console.log(action.payload);
         })
-        .addCase(fetchRefuels.rejected, (state, action) => {
+        .addCase(fetchDepartments.rejected, (state, action) => {
             state.isLoading = false;
             state.error = action.error.message;
         })
@@ -89,5 +88,5 @@ const refuelSlice = createSlice({
     }
 })
 
-export {createRefuel, fetchRefuels};
-export default refuelSlice.reducer;
+export {createDepartment, fetchDepartments};
+export default departmentSlice.reducer;

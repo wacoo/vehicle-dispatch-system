@@ -12,8 +12,8 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
-from .models import VehicleRequest, Driver, Approval, Vehicle, Dispatch, Refuel
-from .serializers import VehicleRequestSerializer, DriverSerializer, ApprovalSerializer, VehicleSerializer, DispatchSerializer, GroupSerializer, UserSerializer, RefuelSerializer
+from .models import VehicleRequest, Driver, Approval, Vehicle, Dispatch, Refuel, Department
+from .serializers import VehicleRequestSerializer, DriverSerializer, ApprovalSerializer, VehicleSerializer, DispatchSerializer, GroupSerializer, UserSerializer, RefuelSerializer, DepartmentSerializer
 
 from rest_framework import viewsets
 from .models import User, Group
@@ -98,6 +98,14 @@ class RefuelViewSet(viewsets.ModelViewSet):
     ''' refuel api view set '''
     queryset = Refuel.objects.select_related('vehicle')
     serializer_class = RefuelSerializer
+
+    # authentication_classes = [JWTAuthentication]
+    # permission_classes = [IsAuthenticated]
+
+class DepartmentViewSet(viewsets.ModelViewSet):
+    ''' department api view set '''
+    queryset = Department.objects.all()
+    serializer_class = DepartmentSerializer
 
     # authentication_classes = [JWTAuthentication]
     # permission_classes = [IsAuthenticated]

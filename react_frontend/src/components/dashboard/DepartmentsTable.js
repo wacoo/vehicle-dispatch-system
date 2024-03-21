@@ -8,6 +8,7 @@ import TableRow from '@mui/material/TableRow';
 import Title from './Title';
 import { fetchRefuels } from '../../redux/refuel/refuelSlice';
 import { useDispatch, useSelector } from 'react-redux';
+import { fetchDepartments } from '../../redux/department/departmentSlice';
 
 // Generate Order Data
 function createData(id, date, name, shipTo, paymentMethod, amount) {
@@ -54,15 +55,15 @@ function preventDefault(event) {
   event.preventDefault();
 }
 
-export default function RefuelsTable({title}) {
-  const refuels = useSelector((state) => state.refuels.refuels.results) ?? [];
+export default function DepartmentsTable({title}) {
+  const departments = useSelector((state) => state.departments.departments.results) ?? [];
   const dispatch = useDispatch();
     React.useEffect(() => {
-        // console.log(refuels);
-    }, [refuels]);
+        console.log(departments);
+    }, [departments]);
 
     React.useEffect(() => {
-        dispatch(fetchRefuels());
+        dispatch(fetchDepartments());
     }, []);
 
   return (
@@ -72,30 +73,20 @@ export default function RefuelsTable({title}) {
         <TableHead>
           <TableRow>
           <TableCell>ID</TableCell>
-            <TableCell>Vehicle</TableCell>
-            <TableCell>Request date</TableCell>
-            <TableCell>Refuel date</TableCell>
-            <TableCell>Fuel type</TableCell>
-            <TableCell>KM before refuel</TableCell>
-            <TableCell>Milage in KM</TableCell>
-            <TableCell>KM per liter</TableCell>
-            <TableCell>Current fuel level</TableCell>
-            <TableCell>Remark</TableCell>
+            <TableCell>Name</TableCell>
+            <TableCell>Location</TableCell>
+            <TableCell>Extension</TableCell>
+            <TableCell>Phone No</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {refuels.map((refuel) => (
-            <TableRow key={refuel.id}>
-              <TableCell>{refuel.id}</TableCell>
-              <TableCell>{`(${refuel.vehicle.license_plate}) ${refuel.vehicle.make} ${refuel.vehicle.model} ${refuel.vehicle.year}; ${refuel.vehicle.type}`}</TableCell>
-              <TableCell>{refuel.refuel_request_date}</TableCell>
-              <TableCell>{refuel.refuel_date}</TableCell>
-              <TableCell>{refuel.fuel_type}</TableCell>
-              <TableCell>{refuel.km_before_refuel}</TableCell>
-              <TableCell>{refuel.milage_in_km}</TableCell>
-              <TableCell>{refuel.km_per_liter}</TableCell>
-              <TableCell>{refuel.current_fuel_level}</TableCell>
-              <TableCell>{refuel.remark}</TableCell>
+          {departments.map((dept) => (
+            <TableRow key={dept.id}>
+              <TableCell>{dept.id}</TableCell>
+              <TableCell>{dept.dept_name}</TableCell>
+              <TableCell>{dept.location}</TableCell>
+              <TableCell>{dept.extension}</TableCell>
+              <TableCell>{dept.phone_number}</TableCell>
             </TableRow>
           ))}
         </TableBody>

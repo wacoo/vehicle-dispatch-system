@@ -27,6 +27,7 @@ function App() {
         <Route path="/dispatches" element={<Dashboard active='Dispatches'/>} />
         <Route path="/approvals" element={<Dashboard active='Approvals'/>} />
         <Route path="/users" element={<Dashboard active='Users'/>} />
+        <Route path="/departments" element={<Dashboard active='Departments'/>} />
         <Route path="/signin" element={<SignIn />} />
         <Route path="/refuels" element={<Dashboard active='Refuel'/>} />
         <Route path="*" element={<NotFound />} />

@@ -138,7 +138,9 @@ const UserContent = () => {
                         onChange={(e) => setUserData((prev) => ({ ...prev, access_level: e.target.value }))}
                     >
                         <MenuItem value={0}>User</MenuItem>
-                        <MenuItem value={2}>Administrator</MenuItem>
+                        <MenuItem value={1}>Approver</MenuItem>
+                        <MenuItem value={2}>Dispatcher</MenuItem>
+                        <MenuItem value={3}>Administrator</MenuItem>
                     </Select>
                 </FormControl>
             </Grid>
