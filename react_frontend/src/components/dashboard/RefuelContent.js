@@ -27,8 +27,8 @@ const RefuelContent = () => {
     const [refuelData, setRefuelData] = useState({
         vehicle: '',
         refuel_request_date: rrdate.format('YYYY-MM-DD'), // Format date directly here
-        fuel_type: '',        
         refuel_date: rdate.format('YYYY-MM-DD'), // Format date directly here
+        fuel_type: '',        
         km_before_refuel: '',
         milage_in_km: '',
         km_per_liter: '',
@@ -36,15 +36,15 @@ const RefuelContent = () => {
         remark: '',
     });
 
-    function formatDate(date) {
-        return date.format('YYYY-MM-DD'); // Format date using dayjs
-    }
+    // function formatDate(date) {
+    //     return date.format('YYYY-MM-DD'); // Format date using dayjs
+    // }
 
     useEffect(() => {
         setRefuelData(prevState => ({
             ...prevState,
-            refuel_request_date: formatDate(rrdate),
-            refuel_date: formatDate(rdate),
+            refuel_request_date:  rrdate.format('YYYY-MM-DD'),
+            refuel_date: rdate.format('YYYY-MM-DD'),
         }));
     }, [rrdate, rdate]);
 

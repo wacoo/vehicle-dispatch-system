@@ -156,4 +156,5 @@ class DispatchSerializer(serializers.ModelSerializer):
 class RefuelSerializer(serializers.ModelSerializer):
     class Meta:
         model = Refuel
-        fields=('vehicle', 'refuel_request_date', 'refuel_date', 'fuel_type', 'km_before_refuel', 'milage_in_km', 'km_per_liter', 'current_fuel_level', 'remark')
+        #fields=('vehicle', 'refuel_request_date', 'refuel_date', 'fuel_type', 'km_before_refuel', 'milage_in_km', 'km_per_liter', 'current_fuel_level', 'remark')
+        fields = '__all__'
